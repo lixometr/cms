@@ -1,0 +1,31 @@
+<template>
+  <Label :label="label" :required="required" class="t-input">
+    <CInput class="lang-input mb-0" :value="value" @input="$emit('input', $event)" />
+  </Label>
+</template>
+
+<script>
+export default {
+  props: {
+    label: String,
+
+    value: String,
+    required: Boolean,
+  },
+  components: {},
+
+  computed: {
+    horizontal() {
+      return this.$store.getters.horizontal;
+    },
+  },
+  methods: {
+    changeValue(val) {
+      this.$emit("input", val);
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+</style>
