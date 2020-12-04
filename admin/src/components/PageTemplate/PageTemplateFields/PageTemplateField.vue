@@ -1,6 +1,6 @@
 <template>
   <div class="product-option">
-    <div
+    <!-- <div
       class="d-flex align-items-center cursor-pointer justify-content-between"
       @click="isOpen = !isOpen"
     >
@@ -8,34 +8,62 @@
       <CButton color="danger" @click="remove">
         <CIcon name="cil-trash"></CIcon>
       </CButton>
-    </div>
-    <CCollapse class="pt-3" :show="isOpen">
-      <CRow alignVertical="center">
-        <CCol col="6">
-          <AInput label="Название опции" v-model="item.name" />
-        </CCol>
-        <CCol col="6">
-          <v-select
-            placeholder="Выберите тип поля"
-            :multiple="false"
-            v-model="item.type"
-            :options="types"
-            label="label"
-            :reduce="(item) => item.key"
-            :searchable="true"
+    </div> -->
+    <!-- <CCollapse class="pt-3" :show="isOpen"> -->
+    <CRow alignVertical="center">
+      <CCol col="6">
+        <AInput label="Название поля" v-model="item.name" @input="emitData" />
+      </CCol>
+      <CCol col="6">
+        <v-select
+          placeholder="Выберите тип поля"
+          :multiple="false"
+          v-model="item.type"
+          :options="types"
+          label="label"
+          :reduce="(item) => item.key"
+          :searchable="true"
+          @input="emitData"
+        />
+      </CCol>
+    </CRow>
+    <CRow class="mb-4 border-bottom pb-3" alignVertical="center">
+      <CCol col="6"
+        ><AInput
+          class="mt-3"
+          label="Значение в коде"
+          v-model="item.var_name"
+          @input="emitData"
+      /></CCol>
+      <CCol col="6">
+        <Label label="Обязательное?" class="mt-3">
+          <CInputCheckbox
+            custom
+            :checked.sync="item.required"
+            @update:checked="emitData"
           />
-        </CCol>
-      </CRow>
-      <CRow class="mb-3">
-        <CCol col="6"
-          ><AInput class="mt-3" label="Значение в коде" v-model="item.var_name"
-        /></CCol>
-        <CCol col="12"
-          ><AInput class="mt-3" label="Комментарий" v-model="item.comment"
-        /></CCol>
-      </CRow>
-      <PageTemplateFieldChooser v-model="item" :type="item.type" :key="item.type"/>
-    </CCollapse>
+        </Label>
+      </CCol>
+      <CCol col="12">
+        <CRow class="d-flex align-items-center">
+          <CCol col="2" class="text-right"><span> Комментарий</span></CCol>
+          <CCol col="10" class="pl-2"
+            ><CInput
+              class="mt-3 w-100 flex-1"
+              :canFull="true"
+              v-model="item.comment"
+              @input="emitData"
+          /></CCol>
+        </CRow>
+      </CCol>
+    </CRow>
+    <PageTemplateFieldChooser
+      v-model="item"
+      @input="emitData"
+      :type="item.type"
+      :key="item.type"
+    />
+    <!-- </CCollapse> -->
   </div>
 </template>
 
@@ -58,7 +86,6 @@ export default {
     PageTemplateFieldChooser,
   },
   computed: {
- 
     types() {
       return [
         {
@@ -74,8 +101,8 @@ export default {
           key: "range",
         },
         {
-          label: "Медиа",
-          key: "media",
+          label: "Изображение",
+          key: "image",
         },
         {
           label: "Файл",
@@ -87,11 +114,11 @@ export default {
         },
         {
           label: "Выбор",
-          key: "choose",
+          key: "select",
         },
         {
           label: "Флажок",
-          key: "flag",
+          key: "checkbox",
         },
         {
           label: "Переключатель",
@@ -102,8 +129,16 @@ export default {
           key: "switcher",
         },
         {
-          label: "Блок",
-          key: "block",
+          label: "Аккардеон",
+          key: "accordion",
+        },
+        {
+          label: "Таб",
+          key: "tab",
+        },
+        {
+          label: "Повторитель",
+          key: "repeater",
         },
       ];
     },
@@ -112,32 +147,28 @@ export default {
     if (!this.item.settings) this.$set(this.item, "settings", {});
   },
   methods: {
-    onDragChange(value) {
-      this.$set(this.item, "values", value);
+  
+    emitData() {
+      this.$emit("input", this.item);
     },
-    onValueDelete(idx) {
-      this.item.values = this.item.values.filter((val, index) => index !== idx);
-    },
-    changeValue(value, idx) {
-      this.$set(this.item.values, idx, value);
-    },
+    
     remove() {
       this.$emit("delete");
     },
-    addValue() {
-      this.item.values.push({
-        price: [],
-        name: "",
-      });
-    },
   },
   watch: {
-    item: {
+    value: {
       deep: true,
       handler() {
-        this.$emit("input", this.item);
+        this.item = _.cloneDeep(this.value);
       },
     },
+    // item: {
+    //   deep: true,
+    //   handler() {
+    //     this.$emit("input", this.item);
+    //   },
+    // },
   },
 };
 </script>

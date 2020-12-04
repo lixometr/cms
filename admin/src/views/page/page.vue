@@ -14,12 +14,13 @@
       <CCardBody>
         <AInput class="mb-3" label="Заголовок" v-model="data.name" />
         <AInput class="mb-3" label="Slug" v-model="data.slug" />
-        <EditComponent
-          c="ATextArea"
-          v="content"
-          label="Текст"
-          :changeValue.sync="data"
-        />
+        <PageTemplateSelect label="Шаблон" class="mb-3" v-model="templateId" />
+      </CCardBody>
+    </CCard>
+    <CCard>
+      <CCardHeader>Поля</CCardHeader>
+      <CCardBody>
+        <PageFields v-model="data.values" :items="template.fields" />
       </CCardBody>
     </CCard>
     <SeoEdit v-model="data" />
@@ -29,18 +30,16 @@
 </template>
 
 <script>
-import AInput from "@/components/AInput";
-import NInput from "@/components/NInput";
-import ImageUpload from "@/components/ImageUpload";
 import EditImage from "@/components/EditImage";
 import PostTagSelect from "@/components/PostTagSelect";
+import PageTemplateSelect from "@/components/PageTemplateSelect";
+import PageFields from "@/components/Page/PageFields";
 export default {
   components: {
-    AInput,
-    NInput,
     EditImage,
-    ImageUpload,
     PostTagSelect,
+    PageTemplateSelect,
+    PageFields,
   },
   props: {
     isNew: Boolean,
@@ -48,33 +47,46 @@ export default {
   data() {
     return {
       data: {},
+      template: {},
+      templateId: "",
     };
   },
-  computed: {
-    horizontal() {
-      return this.$store.getters.horizontal;
-    },
-  },
+  computed: {},
   async created() {
     this.$loading.start();
-    try {
-      if (!this.isNew) {
-        const { data } = await this.$api.get("pageByIdAdmin", {
-          id: this.$route.params.id,
-        });
-        this.data = data;
-      } else {
-        const { data } = await this.$api.post("pages");
-        this.$router.push({ name: "Page", params: { id: data._id } });
-        this.data = data;
-      }
-    } catch (err) {
-      this.$error(err);
-    }
-
+    await this.fetchData();
+    await this.fetchTemplate();
     this.$loading.stop();
   },
   methods: {
+    async fetchData() {
+      try {
+        if (!this.isNew) {
+          const { data } = await this.$api.get("pageByIdAdmin", {
+            id: this.$route.params.id,
+          });
+          this.data = data;
+          this.templateId = this.data.template;
+        } else {
+          const { data } = await this.$api.post("pages");
+          this.$router.push({ name: "Page", params: { id: data._id } });
+          this.data = data;
+        }
+      } catch (err) {
+        this.$error(err);
+      }
+    },
+    async fetchTemplate() {
+      try {
+        if (!this.templateId) return;
+        const { data } = await this.$api.get("pageTemplateById", {
+          id: this.templateId,
+        });
+        this.template = data;
+      } catch (err) {
+        this.$error(err);
+      }
+    },
     async save() {
       try {
         const { data: response } = await this.$api.put(
@@ -105,6 +117,19 @@ export default {
       } catch (err) {
         this.$error(err);
       }
+    },
+  },
+  watch: {
+    templateId(newVal, prevVal) {
+      this.$set(this.data, 'template', this.templateId)
+      if (newVal !== prevVal && !this.$store.getters.isLoading) {
+        this.$set(this.data, "values", {});
+        this.fetchTemplate();
+      }
+    },
+    data: {
+      deep: true,
+      handler(newVal, prevVal) {},
     },
   },
 };

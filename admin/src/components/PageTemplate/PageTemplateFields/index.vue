@@ -1,6 +1,29 @@
 <template>
-  <div class="page-fields pt-2">
-    <draggable
+  <div class="page-fields">
+    <!-- <h5>Поля</h5> -->
+    <CRow class="w-100 mb-2 font-bold">
+      <CCol col="4"><b> Название поля</b></CCol>
+      <CCol col="4"><b>Значение в коде</b></CCol>
+      <CCol col="4"><b> Тип</b></CCol>
+    </CRow>
+    <AppMultiplyer :value="value" @input="onDragChange">
+      <template v-slot:itemHeader="{ idx, item }">
+        <CRow class="w-100">
+          <CCol col="4"> {{ item.name || `Поле ${idx}` }}</CCol>
+          <CCol col="4">{{ item.var_name }}</CCol>
+          <CCol col="4"> {{ item.type }}</CCol>
+        </CRow>
+      </template>
+      <template v-slot:default="{ item, idx }">
+        <PageTemplateField
+          class="p-3 border mb-4"
+          :value="item"
+          :idx="idx + 1"
+          @input="onItemChange($event, idx)"
+        />
+      </template>
+    </AppMultiplyer>
+    <!-- <draggable
       class="page-fields__items"
       tag="div"
       :value="value"
@@ -20,16 +43,16 @@
       <CButton color="warning" class="w-100" @click="add"
         >Добавить поле</CButton
       >
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import PageTemplateField from "./PageTemplateField";
 import draggable from "vuedraggable";
+import AppMultiplyer from "@/components/AppMultiplyer";
 
 export default {
-  /* [ { name: '', type: '', values: [{name: '', price: [{}]}] } ] */
   props: {
     value: {
       type: Array,
@@ -39,6 +62,7 @@ export default {
   components: {
     PageTemplateField,
     draggable,
+    AppMultiplyer,
   },
   methods: {
     onItemChange(value, idx) {

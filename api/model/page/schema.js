@@ -4,7 +4,7 @@ const Image = require('../Image')
 const pageSchema = new Schema({
   name: String,
   slug: String,
-  content: {},
+  values: {},
   template: {
     ref: "PageTemplate",
     type: Schema.Types.ObjectId

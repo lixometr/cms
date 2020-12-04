@@ -1,34 +1,18 @@
 <template>
   <div>
-    <Label
+    <!-- <Label
       label="Ограничение количества символов (Оставьте пустым для снятия ограничений)"
     >
-      <NInput v-model="item.settings.limit" />
-    </Label>
+      <NInput v-model="item.settings.limit" @input="emitData"/>
+    </Label> -->
   </div>
 </template>
 
 <script>
-import {cloneDeep} from "lodash"
+import PageTemplateFieldMixin from "./PageTemplateFieldMixin";
 export default {
-  props: {
-    value: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-  data() {
-    return {
-      item: cloneDeep(this.value) || {}
-    }
-  },
-  components: {},
-  methods: {},
-  watch: {
-    item() {
-      this.$emit('input', this.item)
-    }
-  }
+  mixins: [PageTemplateFieldMixin],
+  
 };
 </script>
 

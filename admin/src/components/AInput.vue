@@ -1,6 +1,6 @@
 <template>
   <Label :label="label" :required="required" class="t-input">
-    <CInput class="lang-input mb-0" :value="value" @input="$emit('input', $event)" />
+    <CInput class="lang-input mb-0" :value="value" v-on="$listeners" @input="$emit('input', $event)" />
   </Label>
 </template>
 

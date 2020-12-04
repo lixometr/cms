@@ -12,7 +12,7 @@
     <CCard>
       <CCardHeader>Редактировать шаблон</CCardHeader>
       <CCardBody>
-        <AInput class="mb-5" label="Заголовок" v-model="data.name" />
+        <AInput class="mb-5" label="Название" v-model="data.name" />
         <PageTemplateFields v-model="data.fields" />
         <!-- <ATextArea class="mb-5" label="Контент" v-model="data.content" /> -->
       </CCardBody>

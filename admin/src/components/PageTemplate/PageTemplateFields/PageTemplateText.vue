@@ -3,31 +3,15 @@
     <Label
       label="Ограничение количества символов (Оставьте пустым для снятия ограничений)"
     >
-      <NInput v-model="item.settings.limit" />
+      <NInput v-model="item.settings.limit" @input="emitData" />
     </Label>
   </div>
 </template>
 
 <script>
-import NInput from "@/components/NInput";
-import {cloneDeep} from "lodash"
+import PageTemplateFieldMixinVue from "./PageTemplateFieldMixin.vue";
 export default {
-  props: {
-    value: Object,
-  },
-  components: {
-    NInput,
-  },
-  data() {
-    return {
-      item: cloneDeep(this.value) || {},
-    };
-  },
-  watch: {
-    item() {
-      this.$emit("input", this.item);
-    },
-  },
+  mixins: [PageTemplateFieldMixinVue],
 };
 </script>
 

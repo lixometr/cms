@@ -14,7 +14,7 @@ module.exports = class ManufacturerModification extends Modification {
             _id: this.item._id,
             name: this.item.name,
             slug: this.item.slug,
-            content: this.item.content,
+            values: this.item.content,
             template: this.item.template,
             seo: this.item.seo || {}
 
