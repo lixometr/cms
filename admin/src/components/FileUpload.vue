@@ -1,12 +1,7 @@
 <template>
   <div :style="{width: width}" class="position-relative">
     
-    <div class="file-upload-info " v-if="showInfo">
-      <Label label="Изображение" required>
-        <label class="cursor-pointer text-info mb-0" :for="inputId" >Загрузить новое</label> /
-        <span class="cursor-pointer text-info" @click="reset">Удалить изображение</span>
-      </Label>
-    </div>
+ 
     <div class="reset-btn bg-danger" @click="reset" v-if="value && !showInfo">
       <span>&times;</span>
     </div>

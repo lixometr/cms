@@ -22,6 +22,7 @@ import PageFieldRange from './PageFieldRange.vue';
 import PageFieldRepeater from './PageFieldRepeater.vue';
 import PageFieldAccordion from './PageFieldAccordion.vue';
 import PageFieldTab from './PageFieldTab.vue';
+import PageFieldFile from './PageFieldFile.vue';
 export default {
   props: {
     value: null,
@@ -48,6 +49,7 @@ export default {
         repeater: PageFieldRepeater,
         accordion: PageFieldAccordion,
         tab: PageFieldTab,
+        file: PageFieldFile
 
       };
       return components[this.type];
