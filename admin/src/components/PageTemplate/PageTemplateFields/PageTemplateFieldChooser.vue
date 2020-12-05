@@ -12,6 +12,8 @@ import PageTemplateCheckbox from './PageTemplateCheckbox.vue';
 import PageTemplateRadio from './PageTemplateRadio.vue';
 import PageTemplateSwitcher from './PageTemplateSwitcher.vue';
 import PageTemplateRepeater from './PageTemplateRepeater.vue';
+import PageTemplateAccordion from './PageTemplateAccordion.vue';
+import PageTemplateTab from './PageTemplateTab.vue';
 export default {
   props: {
     value: null,
@@ -33,7 +35,9 @@ export default {
         checkbox: PageTemplateCheckbox,
         radio: PageTemplateRadio,
         switcher: PageTemplateSwitcher,
-        repeater: PageTemplateRepeater
+        repeater: PageTemplateRepeater,
+        accordion: PageTemplateAccordion,
+        tab: PageTemplateTab,
       };
       return components[this.type];
     },

@@ -23,7 +23,7 @@
           label="label"
           :reduce="(item) => item.key"
           :searchable="true"
-          @input="emitData"
+          @input="changeType"
         />
       </CCol>
     </CRow>
@@ -147,11 +147,15 @@ export default {
     if (!this.item.settings) this.$set(this.item, "settings", {});
   },
   methods: {
-  
+    changeType() {
+      // if(this.dat)
+      this.$set(this.item, "settings", {});
+      this.emitData();
+    },
     emitData() {
       this.$emit("input", this.item);
     },
-    
+
     remove() {
       this.$emit("delete");
     },
@@ -163,12 +167,6 @@ export default {
         this.item = _.cloneDeep(this.value);
       },
     },
-    // item: {
-    //   deep: true,
-    //   handler() {
-    //     this.$emit("input", this.item);
-    //   },
-    // },
   },
 };
 </script>

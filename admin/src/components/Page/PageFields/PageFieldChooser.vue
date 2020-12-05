@@ -20,6 +20,8 @@ import PageFieldCheckbox from './PageFieldCheckbox.vue';
 import PageFieldRadio from './PageFieldRadio.vue';
 import PageFieldRange from './PageFieldRange.vue';
 import PageFieldRepeater from './PageFieldRepeater.vue';
+import PageFieldAccordion from './PageFieldAccordion.vue';
+import PageFieldTab from './PageFieldTab.vue';
 export default {
   props: {
     value: null,
@@ -43,7 +45,10 @@ export default {
         checkbox: PageFieldCheckbox,
         radio: PageFieldRadio,
         range: PageFieldRange,
-        repeater: PageFieldRepeater
+        repeater: PageFieldRepeater,
+        accordion: PageFieldAccordion,
+        tab: PageFieldTab,
+
       };
       return components[this.type];
     },
