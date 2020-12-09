@@ -1,23 +1,48 @@
 <template>
   <div>
-    
-    <PageTemplateFields v-model="item.settings.fields" @input="emitData"></PageTemplateFields>
+    <AppMultiplyer v-model="item.settings.fields">
+      <template v-slot:default="{ item: itm, idx }">
+        <div>
+          <AInput
+            label="Название таба"
+            :value="itm.name"
+            @input="changeTabName(idx, $event)"
+          />
+          <PageTemplateFields
+            class="mt-4"
+            :value="itm.fields"
+            @input="changeField(idx, $event)"
+          ></PageTemplateFields>
+        </div>
+      </template>
+    </AppMultiplyer>
   </div>
 </template>
 
 <script>
 import PageTemplateFieldMixinVue from "./PageTemplateFieldMixin.vue";
+import AppMultiplyer from "@/components/AppMultiplyer";
+
 export default {
   mixins: [PageTemplateFieldMixinVue],
   components: {
-    PageTemplateFields: () =>
-      import("@/components/PageTemplate/PageTemplateFields"),
+    AppMultiplyer,
+    PageTemplateFields: () => import("@/components/PageTemplate/PageTemplateFields"),
   },
   created() {
     // if (!this.item.settings.fields) this.item.settings.fields = [];
   },
+  methods: {
+    changeTabName(idx, value) {
+      this.$set(this.item.settings.fields[idx], "name", value);
+      this.emitData();
+    },
+    changeField(idx, value) {
+      this.$set(this.item.settings.fields[idx], "fields", value);
+      this.emitData();
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

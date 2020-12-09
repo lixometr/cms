@@ -1,25 +1,19 @@
 <template>
   <div class="border">
-    <div class="p-3 cursor-pointer" :class="{ 'border-bottom': isOpen }" @click="toggle">
-      {{ label }}
-    </div>
+    <div class="p-3  cursor-pointer " :class="{'border-bottom': isOpen}" @click="toggle">{{ label }}</div>
     <CCollapse class="pt-4 pr-4" :show="isOpen">
-      <CTabs variant="tabs" :active-tab="0" class="p-3">
-        <CTab :title="tab.name" v-for="(tab, idx) in settings.fields" :key="idx">
-          <div class="mt-3">
-            <PageField
-              :template="templateItem"
-              :value="objValue[templateItem.var_name]"
-              @input="onFieldChange(templateItem.var_name, $event)"
-              v-for="(templateItem, idx) in tab.fields"
-              :key="idx"
-            />
-          </div>
-        </CTab>
-      </CTabs>
+      <PageField
+        :template="templateItem"
+        :value="objValue[templateItem.var_name]"
+        @input="onFieldChange(templateItem.var_name, $event)"
+        v-for="(templateItem, idx) in fields"
+        :key="idx"
+      />
     </CCollapse>
   </div>
 </template>
+
+
 
 <script>
 // value: [ {var_name1: '', var_name2: '} ]
@@ -59,4 +53,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

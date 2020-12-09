@@ -14,6 +14,8 @@ import PageTemplateSwitcher from './PageTemplateSwitcher.vue';
 import PageTemplateRepeater from './PageTemplateRepeater.vue';
 import PageTemplateAccordion from './PageTemplateAccordion.vue';
 import PageTemplateTab from './PageTemplateTab.vue';
+import PageTemplateGallery from './PageTemplateGallery.vue';
+import PageTemplateBlock from './PageTemplateBlock.vue';
 export default {
   props: {
     value: null,
@@ -38,6 +40,8 @@ export default {
         repeater: PageTemplateRepeater,
         accordion: PageTemplateAccordion,
         tab: PageTemplateTab,
+        gallery: PageTemplateGallery,
+        block: PageTemplateBlock
       };
       return components[this.type];
     },

@@ -132,10 +132,14 @@ export default {
           label: "Аккардеон",
           key: "accordion",
         },
-        // {
-        //   label: "Таб",
-        //   key: "tab",
-        // },
+        {
+          label: "Таб",
+          key: "tab",
+        },
+        {
+          label: "Блок",
+          key: "block",
+        },
         {
           label: "Повторитель",
           key: "repeater",
