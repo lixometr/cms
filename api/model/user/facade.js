@@ -27,7 +27,7 @@ class UserFacade extends Facade {
         let password = data.password
         password = await this.hashPassword(password)
         let confirm_key = await bcrypt.genSalt(10)
-        confirm_key = confirm_key.replace('/', '-')
+        confirm_key = confirm_key.replace(/\//g, '-')
         data = { ...data, password, confirm_key }
         const result = await this.Model.create(data)
         return result
