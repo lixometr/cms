@@ -7,6 +7,7 @@
       @input="onDragChange"
     >
       <AppMultiplyerItem
+        :itemClass="itemClass[idx]"
         v-for="(item, idx) in value"
         :key="idx"
         :idx="idx"
@@ -14,7 +15,7 @@
         @delete="onItemDelete(idx)"
       >
         <template v-slot:itemHeader="slotData"
-          ><slot name="itemHeader" v-bind="{...slotData, item, idx}"></slot
+          ><slot name="itemHeader" v-bind="{ ...slotData, item, idx }"></slot
         ></template>
         <slot v-bind="{ item, idx }"></slot>
       </AppMultiplyerItem>
@@ -38,6 +39,10 @@ export default {
     addText: {
       type: String,
       default: "Добавить поле",
+    },
+    itemClass: {
+      type: Array,
+      default: () => []
     },
     value: {
       type: Array,

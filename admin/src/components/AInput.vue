@@ -1,6 +1,12 @@
 <template>
   <Label :label="label" :required="required" class="t-input">
-    <CInput class="lang-input mb-0" :value="value" v-on="$listeners" @input="$emit('input', $event)" />
+    <CInput
+      :isValid="isValid"
+      class="mb-0"
+      :value="value"
+      v-on="$listeners"
+      @input="$emit('input', $event)"
+    />
   </Label>
 </template>
 
@@ -8,6 +14,10 @@
 export default {
   props: {
     label: String,
+    isValid: {
+      type: Boolean,
+      default: undefined
+    },
 
     value: String,
     required: Boolean,

@@ -6,7 +6,7 @@
       <CCol col="4"><b>Значение в коде</b></CCol>
       <CCol col="4"><b> Тип</b></CCol>
     </CRow>
-    <AppMultiplyer :value="value" @input="onDragChange">
+    <AppMultiplyer :value="value" @input="onDragChange" >
       <template v-slot:itemHeader="{ idx, item }">
         <CRow class="w-100">
           <CCol col="4"> {{ item.name || `Поле ${idx}` }}</CCol>
@@ -20,6 +20,7 @@
           :value="item"
           :idx="idx + 1"
           @input="onItemChange($event, idx)"
+          :ref="`field-${idx}`"
         />
       </template>
     </AppMultiplyer>
@@ -64,7 +65,32 @@ export default {
     draggable,
     AppMultiplyer,
   },
+  mounted() {
+    this.validate();
+  },
+  computed: {},
   methods: {
+    getFields() {
+      const refs = Object.keys(this.$refs);
+      const fields = refs
+        .map((ref, idx) => {
+          const el = this.$refs["field-" + idx];
+          if (el) {
+            return el;
+          }
+          return false;
+        })
+        .filter((item) => !!item);
+      return fields;
+    },
+    validate() {
+      this.getFields().forEach((component) => {
+        component.validate();
+      });
+      return !this.getFields()
+        .map((field) => field.isValid)
+        .includes(false);
+    },
     onItemChange(value, idx) {
       const items = [...this.value];
       items[idx] = value;

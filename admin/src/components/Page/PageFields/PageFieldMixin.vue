@@ -23,6 +23,9 @@ export default {
     label() {
       return this.template.name;
     },
+    varName() {
+      return this.template.var_name;
+    },
     settings() {
       return this.template.settings || {};
     },

@@ -1,6 +1,9 @@
 <template>
   <div>
     <AppMultiplyer v-model="item.settings.fields">
+      <template v-slot:itemHeader="{ item, idx }">
+        <span>{{ item.name || `Поле ${idx + 1}` }}</span>
+      </template>
       <template v-slot:default="{ item: itm, idx }">
         <div>
           <AInput
@@ -26,7 +29,8 @@ export default {
   mixins: [PageTemplateFieldMixinVue],
   components: {
     AppMultiplyer,
-    PageTemplateFields: () => import("@/components/PageTemplate/PageTemplateFields"),
+    PageTemplateFields: () =>
+      import("@/components/PageTemplate/PageTemplateFields"),
   },
   created() {
     // if (!this.item.settings.fields) this.item.settings.fields = [];

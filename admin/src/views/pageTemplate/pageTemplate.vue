@@ -13,7 +13,7 @@
       <CCardHeader>Редактировать шаблон</CCardHeader>
       <CCardBody>
         <AInput class="mb-5" label="Название" v-model="data.name" />
-        <PageTemplateFields v-model="data.fields" />
+        <PageTemplateFields ref="fields" v-model="data.fields" />
         <!-- <ATextArea class="mb-5" label="Контент" v-model="data.content" /> -->
       </CCardBody>
     </CCard>
@@ -87,7 +87,19 @@ export default {
     this.$loading.stop();
   },
   methods: {
+    validate() {
+      return this.$refs.fields.validate();
+    },
     async save() {
+      const isValid = this.validate();
+      if (!isValid) {
+        this.$notify({
+          group: "main",
+          title: "Исправьте ошибки!",
+          type: "error",
+        });
+        return;
+      }
       try {
         const { data: response } = await this.$api.put(
           "pageTemplateById",

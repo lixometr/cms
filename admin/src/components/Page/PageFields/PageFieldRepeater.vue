@@ -1,16 +1,21 @@
 <template>
   <div>
-    <AppMultiplyer :value="arrValue" @input="emitData">
-      <template v-slot:default="{ idx }">
-        <PageField
-          :template="templateItem"
-          :value="value[idx][templateItem.var_name]"
-          @input="onFieldChange(idx, templateItem.var_name, $event)"
-          v-for="(templateItem, index) in fields"
-          :key="index"
-        />
-      </template>
-    </AppMultiplyer>
+    <CCard>
+      <CCardHeader>{{template.name}}</CCardHeader>
+      <CCardBody>
+        <AppMultiplyer :value="arrValue" @input="emitData">
+          <template v-slot:default="{ idx }">
+            <PageField
+              :template="templateItem"
+              :value="value[idx][templateItem.var_name]"
+              @input="onFieldChange(idx, templateItem.var_name, $event)"
+              v-for="(templateItem, index) in fields"
+              :key="index"
+            />
+          </template>
+        </AppMultiplyer>
+      </CCardBody>
+    </CCard>
   </div>
 </template>
 
@@ -38,7 +43,7 @@ export default {
       this.emitData(value);
     },
     onFieldChange(idx, varName, newValue) {
-      const value = [ ...this.value ];
+      const value = [...this.value];
       value[idx][varName] = newValue;
       this.$emit("input", value);
     },

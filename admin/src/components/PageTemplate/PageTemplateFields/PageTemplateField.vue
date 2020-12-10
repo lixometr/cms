@@ -12,7 +12,12 @@
     <!-- <CCollapse class="pt-3" :show="isOpen"> -->
     <CRow alignVertical="center">
       <CCol col="6">
-        <AInput label="Название поля" v-model="item.name" @input="emitData" />
+        <AInput
+          :isError="!$v.item.name.$error"
+          label="Название поля"
+          v-model="item.name"
+          @input="emitData"
+        />
       </CCol>
       <CCol col="6">
         <v-select
@@ -33,7 +38,7 @@
           class="mt-3"
           label="Значение в коде"
           v-model="item.var_name"
-          @input="emitData"
+          @input="onChangeVarName"
       /></CCol>
       <CCol col="6">
         <Label label="Обязательное?" class="mt-3">
@@ -70,22 +75,45 @@
 <script>
 import _ from "lodash";
 import PageTemplateFieldChooser from "./PageTemplateFieldChooser";
-
+import cyrillicToTranslit from "cyrillic-to-translit-js";
+import { required, minLength, between } from "vuelidate/lib/validators";
 export default {
   props: {
     value: Object,
     idx: Number,
   },
+  validations: {
+    item: {
+      name: {
+        required,
+      },
+      var_name: {
+        required,
+      },
+      type: {
+        required,
+      },
+    },
+  },
   data() {
     return {
       isOpen: false,
       item: _.cloneDeep(this.value),
+      hasVarName: !!this.value.var_name,
     };
   },
+
   components: {
     PageTemplateFieldChooser,
   },
   computed: {
+    isValid() {
+      return (
+        !this.$v.item.name.$error &&
+        !this.$v.item.var_name.$error &&
+        !this.$v.item.type.$error
+      );
+    },
     types() {
       return [
         {
@@ -151,6 +179,13 @@ export default {
     if (!this.item.settings) this.$set(this.item, "settings", {});
   },
   methods: {
+    validate() {
+      this.$v.$touch();
+    },
+    onChangeVarName() {
+      this.hasVarName = true;
+      this.emitData();
+    },
     changeType() {
       // if(this.dat)
       this.$set(this.item, "settings", {});
@@ -165,6 +200,16 @@ export default {
     },
   },
   watch: {
+    item: {
+      deep: true,
+      handler() {
+        if (this.hasVarName) return;
+        const name = this.item.name || "";
+        let sValue = cyrillicToTranslit().transform(name.toLowerCase(), "_");
+        sValue = sValue.replace(/\/-\./g, "_");
+        this.$set(this.item, "var_name", sValue);
+      },
+    },
     value: {
       deep: true,
       handler() {

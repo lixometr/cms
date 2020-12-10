@@ -121,7 +121,7 @@ export default {
   },
   watch: {
     templateId(newVal, prevVal) {
-      this.$set(this.data, 'template', this.templateId)
+      this.$set(this.data, "template", this.templateId);
       if (newVal !== prevVal && !this.$store.getters.isLoading) {
         this.$set(this.data, "values", {});
         this.fetchTemplate();

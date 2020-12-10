@@ -1,15 +1,19 @@
 <template>
-  <div class="border">
-    <div class="p-3  cursor-pointer " :class="{'border-bottom': isOpen}" @click="toggle">{{ label }}</div>
-    <CCollapse class="pt-4 pr-4" :show="isOpen">
-      <PageField
-        :template="templateItem"
-        :value="objValue[templateItem.var_name]"
-        @input="onFieldChange(templateItem.var_name, $event)"
-        v-for="(templateItem, idx) in fields"
-        :key="idx"
-      />
-    </CCollapse>
+  <div>
+    <CCard :class="{'no-border-bottom': !isOpen}">
+      <CCardHeader class="cursor-pointer"  @click="toggle">{{ label }}</CCardHeader>
+      <CCollapse class="" :show="isOpen">
+        <CCardBody class="pt-4 pr-4">
+          <PageField
+            :template="templateItem"
+            :value="objValue[templateItem.var_name]"
+            @input="onFieldChange(templateItem.var_name, $event)"
+            v-for="(templateItem, idx) in fields"
+            :key="idx"
+          />
+        </CCardBody>
+      </CCollapse>
+    </CCard>
   </div>
 </template>
 
@@ -53,5 +57,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+.no-border-bottom {
+  border-bottom: none!important;
+}
 </style>

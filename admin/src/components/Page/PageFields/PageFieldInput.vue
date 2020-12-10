@@ -1,10 +1,15 @@
 <template>
-  <AInput
-    :label="label"
-    :value="value"
-    @keypress="onKeyPress"
-    @input="onInput"
-  />
+  <Label label=" ">
+    <template v-slot:label>
+      <div>{{ label }}</div>
+      <div class="text-sm font-size-12">
+        <i>{{ varName }}</i>
+      </div>
+    </template>
+    <template v-slot:default>
+      <AInput :value="value" @keypress="onKeyPress" @input="onInput" />
+    </template>
+  </Label>
 </template>
 
 

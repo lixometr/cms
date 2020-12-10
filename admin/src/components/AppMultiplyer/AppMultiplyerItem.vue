@@ -2,10 +2,11 @@
   <div class="app-multiplyer-item p-3 border mb-2">
     <div
       class="d-flex align-items-center cursor-pointer justify-content-between"
-      @click="isOpen = !isOpen"
+      :class="itemClass"
+      @click="toggle"
     >
       <slot name="itemHeader" v-bind="{ idx }">
-        <span>Поле {{idx + 1}}</span>
+        <span>Поле {{ idx + 1 }}</span>
       </slot>
       <CButton color="danger" @click="remove">
         <CIcon name="cil-trash"></CIcon>
@@ -13,7 +14,7 @@
     </div>
     <CCollapse :show="isOpen">
       <div class="pt-3">
-        <slot ></slot>
+        <slot></slot>
       </div>
     </CCollapse>
   </div>
@@ -25,6 +26,7 @@ import _ from "lodash";
 export default {
   props: {
     idx: Number,
+    itemClass: null,
     value: {
       type: Object,
       default: () => ({}),
@@ -39,6 +41,9 @@ export default {
   computed: {},
   created() {},
   methods: {
+    toggle() {
+      this.isOpen = !this.isOpen;
+    },
     emitData(value) {
       this.$emit("input", value);
     },

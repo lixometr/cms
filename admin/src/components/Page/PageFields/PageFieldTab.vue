@@ -2,7 +2,7 @@
   <div>
     <CTabs variant="tabs" class="p-2" :active-tab="0">
       <CTab :title="tab.name" v-for="(tab, idx) in settings.fields" :key="idx">
-        <div class="mt-3">
+        <div class="pt-3  border-left border-right border-bottom">
           <PageField
             :template="templateItem"
             :value="objValue[templateItem.var_name]"
