@@ -9,13 +9,16 @@ export default {
       default: () => ({}),
     },
   },
-
+  computed: {},
   data() {
     return {
       item: _.merge({}, { settings: {} }, _.cloneDeep(this.value)),
     };
   },
   methods: {
+    validate() {
+      return true;
+    },
     emitData() {
       this.$emit("input", this.item);
     },
@@ -24,7 +27,7 @@ export default {
     value: {
       deep: true,
       handler() {
-        this.item = _.cloneDeep(this.value)
+        this.item = _.merge({}, { settings: {} }, _.cloneDeep(this.value));
       },
     },
   },

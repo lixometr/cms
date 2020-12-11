@@ -13,7 +13,7 @@
     <CRow alignVertical="center">
       <CCol col="6">
         <AInput
-          :isError="!$v.item.name.$error"
+          :isValid="$v.item.name.$error ? false : undefined"
           label="Название поля"
           v-model="item.name"
           @input="emitData"
@@ -21,6 +21,7 @@
       </CCol>
       <CCol col="6">
         <v-select
+          :class="{ 'vue-select-error': $v.item.type.$error }"
           placeholder="Выберите тип поля"
           :multiple="false"
           v-model="item.type"
@@ -35,6 +36,7 @@
     <CRow class="mb-4 border-bottom pb-3" alignVertical="center">
       <CCol col="6"
         ><AInput
+          :isValid="$v.item.var_name.$error ? false : undefined"
           class="mt-3"
           label="Значение в коде"
           v-model="item.var_name"
@@ -67,6 +69,7 @@
       @input="emitData"
       :type="item.type"
       :key="item.type"
+      ref="cType"
     />
     <!-- </CCollapse> -->
   </div>
@@ -76,7 +79,7 @@
 import _ from "lodash";
 import PageTemplateFieldChooser from "./PageTemplateFieldChooser";
 import cyrillicToTranslit from "cyrillic-to-translit-js";
-import { required, minLength, between } from "vuelidate/lib/validators";
+import { required,} from "vuelidate/lib/validators";
 export default {
   props: {
     value: Object,
@@ -107,13 +110,6 @@ export default {
     PageTemplateFieldChooser,
   },
   computed: {
-    isValid() {
-      return (
-        !this.$v.item.name.$error &&
-        !this.$v.item.var_name.$error &&
-        !this.$v.item.type.$error
-      );
-    },
     types() {
       return [
         {
@@ -141,15 +137,15 @@ export default {
           key: "gallery",
         },
         {
-          label: "Выбор",
+          label: "Выбор (Select)",
           key: "select",
         },
         {
-          label: "Флажок",
+          label: "Флажок (CheckBox)",
           key: "checkbox",
         },
         {
-          label: "Переключатель",
+          label: "Переключатель (Radio)",
           key: "radio",
         },
         {
@@ -181,6 +177,13 @@ export default {
   methods: {
     validate() {
       this.$v.$touch();
+      const cTypeValid = this.$refs.cType.validate();
+      return (
+        !this.$v.item.name.$error &&
+        !this.$v.item.var_name.$error &&
+        !this.$v.item.type.$error &&
+        cTypeValid
+      );
     },
     onChangeVarName() {
       this.hasVarName = true;
@@ -208,6 +211,7 @@ export default {
         let sValue = cyrillicToTranslit().transform(name.toLowerCase(), "_");
         sValue = sValue.replace(/\/-\./g, "_");
         this.$set(this.item, "var_name", sValue);
+        // this.emitData()
       },
     },
     value: {

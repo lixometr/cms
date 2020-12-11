@@ -1,13 +1,13 @@
 <template>
   <div>
-    <AppMultiplyer v-model="item.settings.fields">
+    <AppMultiplyer v-model="item.settings.fields" :itemClass="itemClass">
       <template v-slot:itemHeader="{ item, idx }">
-        <span>{{ item.name || `Поле ${idx + 1}` }}</span>
+        <span>{{ item.name || `Вкладка ${idx + 1}` }}</span>
       </template>
       <template v-slot:default="{ item: itm, idx }">
         <div>
           <AInput
-            label="Название таба"
+            label="Название вкладки"
             :value="itm.name"
             @input="changeTabName(idx, $event)"
           />
@@ -15,6 +15,7 @@
             class="mt-4"
             :value="itm.fields"
             @input="changeField(idx, $event)"
+            ref="fields"
           ></PageTemplateFields>
         </div>
       </template>
@@ -23,6 +24,7 @@
 </template>
 
 <script>
+// Вкладки
 import AppMultiplyer from "@/components/AppMultiplyer";
 import PageTemplateFieldMixinVue from "./PageTemplateFieldMixin.vue";
 export default {
@@ -35,7 +37,20 @@ export default {
   created() {
     // if (!this.item.settings.fields) this.item.settings.fields = [];
   },
+  data() {
+    return {
+      itemClass: []
+    }
+  },
+  computed: {},
   methods: {
+    validate() {
+      const fields = this.$refs.fields;
+      if (fields) {
+        return this.$refs.fields.validate();
+      }
+      return true;
+    },
     changeTabName(idx, value) {
       this.$set(this.item.settings.fields[idx], "name", value);
       this.emitData();

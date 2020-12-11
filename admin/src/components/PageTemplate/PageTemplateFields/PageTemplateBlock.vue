@@ -1,7 +1,10 @@
 <template>
   <div>
-    
-    <PageTemplateFields v-model="item.settings.fields" @input="emitData"></PageTemplateFields>
+    <PageTemplateFields
+      v-model="item.settings.fields"
+      @input="emitData"
+      ref="fields"
+    ></PageTemplateFields>
   </div>
 </template>
 
@@ -12,6 +15,15 @@ export default {
   components: {
     PageTemplateFields: () =>
       import("@/components/PageTemplate/PageTemplateFields"),
+  },
+  methods: {
+    validate() {
+      const fields = this.$refs.fields;
+      if (fields) {
+        return this.$refs.fields.validate();
+      }
+      return true;
+    },
   },
   created() {
     // if (!this.item.settings.fields) this.item.settings.fields = [];

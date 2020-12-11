@@ -1,8 +1,8 @@
 <template>
-  <div class="app-multiplyer-item p-3 border mb-2">
+  <div class="app-multiplyer-item p-3 border  mb-2"  :class="itemClass">
     <div
       class="d-flex align-items-center cursor-pointer justify-content-between"
-      :class="itemClass"
+     
       @click="toggle"
     >
       <slot name="itemHeader" v-bind="{ idx }">

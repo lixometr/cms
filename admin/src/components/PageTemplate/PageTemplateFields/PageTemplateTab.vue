@@ -15,6 +15,7 @@
             class="mt-4"
             :value="itm.fields"
             @input="changeField(idx, $event)"
+            ref="fields"
           ></PageTemplateFields>
         </div>
       </template>
@@ -37,6 +38,13 @@ export default {
     // if (!this.item.settings.fields) this.item.settings.fields = [];
   },
   methods: {
+    validate() {
+      const fields = this.$refs.fields;
+      if (fields) {
+        return this.$refs.fields.validate();
+      }
+      return true;
+    },
     changeTabName(idx, value) {
       this.$set(this.item.settings.fields[idx], "name", value);
       this.emitData();

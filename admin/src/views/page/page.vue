@@ -13,7 +13,7 @@
       <CCardHeader>Редактировать страницу</CCardHeader>
       <CCardBody>
         <AInput class="mb-3" label="Заголовок" v-model="data.name" />
-        <AInput class="mb-3" label="Slug" v-model="data.slug" />
+        <AInput class="mb-3" label="Slug" v-model="data.slug" @input="noSlug=false"/>
         <PageTemplateSelect label="Шаблон" class="mb-3" v-model="templateId" />
       </CCardBody>
     </CCard>
@@ -34,6 +34,8 @@ import EditImage from "@/components/EditImage";
 import PostTagSelect from "@/components/PostTagSelect";
 import PageTemplateSelect from "@/components/PageTemplateSelect";
 import PageFields from "@/components/Page/PageFields";
+import cyrillicToTranslit from "cyrillic-to-translit-js";
+
 export default {
   components: {
     EditImage,
@@ -49,6 +51,7 @@ export default {
       data: {},
       template: {},
       templateId: "",
+      noSlug: false,
     };
   },
   computed: {},
@@ -67,6 +70,9 @@ export default {
           });
           this.data = data;
           this.templateId = this.data.template;
+          if (!data.slug) {
+            this.noSlug = true;
+          }
         } else {
           const { data } = await this.$api.post("pages");
           this.$router.push({ name: "Page", params: { id: data._id } });
@@ -129,7 +135,16 @@ export default {
     },
     data: {
       deep: true,
-      handler(newVal, prevVal) {},
+      handler() {
+        if (this.data.name && this.noSlug) {
+          const name = this.data.name || "";
+          const sValue = cyrillicToTranslit().transform(
+            name.toLowerCase(),
+            "-"
+          );
+          this.$set(this.data, "slug", sValue);
+        }
+      },
     },
   },
 };

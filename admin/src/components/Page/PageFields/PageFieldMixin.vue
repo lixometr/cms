@@ -14,6 +14,9 @@ export default {
     return {};
   },
   computed: {
+    isValid() {
+
+    },
     objValue() {
       return this.value || {};
     },
@@ -23,6 +26,9 @@ export default {
     label() {
       return this.template.name;
     },
+    required() {
+      return this.template.required
+    },
     varName() {
       return this.template.var_name;
     },
@@ -31,6 +37,9 @@ export default {
     },
   },
   methods: {
+    validate() {
+
+    },
     emitData(value) {
       this.$emit("input", value);
     },

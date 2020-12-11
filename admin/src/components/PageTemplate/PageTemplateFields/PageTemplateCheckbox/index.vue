@@ -3,22 +3,17 @@
     <AppMultiplyer
       class="pt-4"
       v-model="optionsModel"
+      :itemClass="itemClass"
       addText="Добавить вариант"
     >
       <template v-slot:itemHeader="{ idx }">
         <span>{{ optionsModel[idx].value || `Вариант ${idx + 1}` }}</span>
       </template>
       <template v-slot:default="{ idx }">
-        <AInput
-          label="Вариант"
-          v-model="item.settings.options[idx].value"
-          @input="onInput"
-        />
-        <AInput
-          class="mt-3"
-          label="Значение в коде"
-          v-model="item.settings.options[idx].var_name"
-          @input="onInput"
+        <PageTemplateSelectItem
+          @input="emitData"
+          v-model="item.settings.options[idx]"
+          :ref="`item-${idx}`"
         />
       </template>
     </AppMultiplyer>
@@ -28,12 +23,19 @@
 <script>
 import AppMultiplyer from "@/components/AppMultiplyer";
 import AppMultiplyerItem from "@/components/AppMultiplyer/AppMultiplyerItem";
-import PageTemplateFieldMixinVue from "./PageTemplateFieldMixin.vue";
+import PageTemplateFieldMixinVue from "@/components/PageTemplate/PageTemplateFields/PageTemplateFieldMixin.vue";
+import PageTemplateSelectItem from "@/components/PageTemplate/PageTemplateFields/PageTemplateSelectItem";
+import PageFieldSelectMixin from "@/components/PageTemplate/PageTemplateFields/PageTemplateSelectMixin"
 export default {
-  mixins: [PageTemplateFieldMixinVue],
+  mixins: [PageTemplateFieldMixinVue, PageFieldSelectMixin],
   components: {
     AppMultiplyerItem,
     AppMultiplyer,
+    PageTemplateSelectItem,
+  },
+  data() {
+    return {
+    }
   },
   computed: {
     optionsModel: {
@@ -47,6 +49,7 @@ export default {
     },
   },
   methods: {
+    
     onInput() {
       this.emitData();
     },

@@ -1,21 +1,27 @@
 <template>
-  <component :is="fieldComponent" v-on="$listeners" v-bind="$attrs" :value="value"/>
+  <component
+    :is="fieldComponent"
+    v-on="$listeners"
+    v-bind="$attrs"
+    :value="value"
+    ref="comp"
+  />
 </template>
 
 <script>
 import PageTemplateText from "./PageTemplateText";
 import PageTemplateTextArea from "./PageTemplateTextArea";
 import PageTemplateRange from "./PageTemplateRange";
-import PageTemplateImage from './PageTemplateImage.vue';
-import PageTemplateSelect from './PageTemplateSelect.vue';
-import PageTemplateCheckbox from './PageTemplateCheckbox.vue';
-import PageTemplateRadio from './PageTemplateRadio.vue';
-import PageTemplateSwitcher from './PageTemplateSwitcher.vue';
-import PageTemplateRepeater from './PageTemplateRepeater.vue';
-import PageTemplateAccordion from './PageTemplateAccordion.vue';
-import PageTemplateTab from './PageTemplateTab.vue';
-import PageTemplateGallery from './PageTemplateGallery.vue';
-import PageTemplateBlock from './PageTemplateBlock.vue';
+import PageTemplateImage from "./PageTemplateImage.vue";
+import PageTemplateSelect from "./PageTemplateSelect";
+import PageTemplateCheckbox from "./PageTemplateCheckbox";
+import PageTemplateRadio from "./PageTemplateRadio";
+import PageTemplateSwitcher from "./PageTemplateSwitcher.vue";
+import PageTemplateRepeater from "./PageTemplateRepeater.vue";
+import PageTemplateAccordion from "./PageTemplateAccordion.vue";
+import PageTemplateTab from "./PageTemplateTab.vue";
+import PageTemplateGallery from "./PageTemplateGallery.vue";
+import PageTemplateBlock from "./PageTemplateBlock.vue";
 export default {
   props: {
     value: null,
@@ -41,9 +47,18 @@ export default {
         accordion: PageTemplateAccordion,
         tab: PageTemplateTab,
         gallery: PageTemplateGallery,
-        block: PageTemplateBlock
+        block: PageTemplateBlock,
       };
       return components[this.type];
+    },
+  },
+  methods: {
+    validate() {
+      const c = this.$refs.comp;
+      if (c) {
+        return this.$refs.comp.validate();
+      }
+      return true;
     },
   },
 };

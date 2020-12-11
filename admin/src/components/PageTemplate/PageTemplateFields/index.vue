@@ -4,14 +4,14 @@
     <CRow class="w-100 mb-2 font-bold">
       <CCol col="4"><b> Название поля</b></CCol>
       <CCol col="4"><b>Значение в коде</b></CCol>
-      <CCol col="4"><b> Тип</b></CCol>
+      <CCol col="3"><b> Тип</b></CCol>
     </CRow>
-    <AppMultiplyer :value="value" @input="onDragChange" >
+    <AppMultiplyer :value="value" @input="onDragChange" :itemClass="itemClass">
       <template v-slot:itemHeader="{ idx, item }">
         <CRow class="w-100">
           <CCol col="4"> {{ item.name || `Поле ${idx}` }}</CCol>
           <CCol col="4">{{ item.var_name }}</CCol>
-          <CCol col="4"> {{ item.type }}</CCol>
+          <CCol col="3"> {{ item.type }}</CCol>
         </CRow>
       </template>
       <template v-slot:default="{ item, idx }">
@@ -68,6 +68,11 @@ export default {
   mounted() {
     this.validate();
   },
+  data() {
+    return {
+      itemClass: [],
+    };
+  },
   computed: {},
   methods: {
     getFields() {
@@ -84,17 +89,19 @@ export default {
       return fields;
     },
     validate() {
-      this.getFields().forEach((component) => {
-        component.validate();
+      const itemsValid = this.getFields().map((component) => {
+        return component.validate();
       });
-      return !this.getFields()
-        .map((field) => field.isValid)
-        .includes(false);
+      this.itemClass = itemsValid.map((item) => ({
+        "border-danger": !item,
+      }));
+      return !itemsValid.includes(false);
     },
     onItemChange(value, idx) {
       const items = [...this.value];
       items[idx] = value;
       this.$emit("input", items);
+      this.validate();
     },
     onItemDelete(idx) {
       const items = [...this.value];

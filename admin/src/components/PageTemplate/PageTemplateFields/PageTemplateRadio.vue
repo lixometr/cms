@@ -9,16 +9,10 @@
         <span>{{ optionsModel[idx].value || `Вариант ${idx + 1}` }}</span>
       </template>
       <template v-slot:default="{ idx }">
-        <AInput
-          label="Вариант"
-          v-model="item.settings.options[idx].value"
+        <PageTemplateSelectItem
           @input="onInput"
-        />
-        <AInput
-          class="mt-3"
-          label="Значение в коде"
-          v-model="item.settings.options[idx].var_name"
-          @input="onInput"
+          v-model="item.settings.options[idx]"
+          :ref="`item-${idx}`"
         />
       </template>
     </AppMultiplyer>
@@ -29,11 +23,15 @@
 import AppMultiplyer from "@/components/AppMultiplyer";
 import AppMultiplyerItem from "@/components/AppMultiplyer/AppMultiplyerItem";
 import PageTemplateFieldMixinVue from "./PageTemplateFieldMixin.vue";
+import PageFieldSelectMixin from "@/components/PageTemplate/PageTemplateFields/PageTemplateSelectMixin";
+import PageTemplateSelectItem from "@/components/PageTemplate/PageTemplateFields/PageTemplateSelectItem";
+
 export default {
-  mixins: [PageTemplateFieldMixinVue],
+  mixins: [PageTemplateFieldMixinVue, PageFieldSelectMixin],
   components: {
     AppMultiplyerItem,
     AppMultiplyer,
+    PageTemplateSelectItem
   },
   computed: {
     optionsModel: {

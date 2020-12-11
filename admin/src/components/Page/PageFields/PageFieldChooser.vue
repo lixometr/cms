@@ -20,7 +20,7 @@ import PageFieldCheckbox from './PageFieldCheckbox.vue';
 import PageFieldRadio from './PageFieldRadio.vue';
 import PageFieldRange from './PageFieldRange.vue';
 import PageFieldRepeater from './PageFieldRepeater.vue';
-import PageFieldAccordion from './PageFieldAccordion.vue';
+import PageFieldAccordion from './PageFieldAccordion';
 import PageFieldTab from './PageFieldTab.vue';
 import PageFieldFile from './PageFieldFile.vue';
 import PageFieldBlock from './PageFieldBlock.vue';
