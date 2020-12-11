@@ -11,6 +11,7 @@
               @input="onFieldChange(idx, templateItem.var_name, $event)"
               v-for="(templateItem, index) in fields"
               :key="index"
+              :ref="`field-${idx}`"
             />
           </template>
         </AppMultiplyer>
