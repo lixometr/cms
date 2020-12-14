@@ -13,6 +13,7 @@
             @input="onFieldChange"
             :key="idx"
             class="mb-2"
+            ref="fields"
           />
         </div>
       </CCollapse>
@@ -44,6 +45,15 @@ export default {
   },
 
   methods: {
+    getFields() {
+      return this.$refs.fields;
+    },
+    validate() {
+      const itemsValid = this.getFields().map((component) => {
+        return component.validate();
+      });
+      return !itemsValid.includes(false);
+    },
     toggle() {
       this.isOpen = !this.isOpen;
     },

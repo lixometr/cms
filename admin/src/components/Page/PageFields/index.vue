@@ -6,6 +6,7 @@
       :value="value[item.var_name]"
       @input="onFieldChange(item, $event)"
       :key="idx"
+      ref="fields"
     />
   </div>
 </template>
@@ -28,10 +29,21 @@ export default {
   },
 
   methods: {
-    onFieldChange(item, newValue) {
+    getFields() {
+      return this.$refs.fields || [];
+    },
+    validate() {
+      const itemsValid = this.getFields().map((component) => {
+        return component.validate();
+      });
+      return !itemsValid.includes(false);
+    },
+    async onFieldChange(item, newValue) {
       const value = { ...this.value };
       value[item.var_name] = newValue;
       this.$emit("input", value);
+      await this.$nextTick();
+      this.validate();
     },
   },
 };

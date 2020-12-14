@@ -1,30 +1,58 @@
 <template>
-  <div :style="{width: width}" class="position-relative">
-    
-    <div class="image-upload-info " v-if="showInfo">
+  <div :style="{ width: width }" class="position-relative">
+    <div class="image-upload-info" v-if="showInfo">
       <Label label="Изображение" required>
-        <label class="cursor-pointer text-info mb-0" :for="inputId" >Загрузить новое</label> /
-        <span class="cursor-pointer text-info" @click="reset">Удалить изображение</span>
+        <label class="cursor-pointer text-info mb-0" :for="inputId"
+          >Загрузить новое</label
+        >
+        /
+        <span class="cursor-pointer text-info" @click="reset"
+          >Удалить изображение</span
+        >
       </Label>
     </div>
     <div class="reset-btn bg-danger" @click="reset" v-if="value && !showInfo">
       <span>&times;</span>
     </div>
-
     <file-upload
-      class="upload w-100 "
-      :class="{'p-4': showInfo}"
+      class="upload w-100"
+      :class="{ 'p-4': showInfo }"
       :input-id="inputId"
       ref="upload"
       v-model="files"
       :custom-action="doUpload"
       :drop="true"
+      :multiple="multiple"
+      :maximum="maximum"
       @input-file="inputFile"
       @input-filter="inputFilter"
     >
-     
-      <CImg class="upload-image  d-block"  :class="{'shadow': showInfo}" :src="value" maxWidth="100%" v-if="value" />
-      <CIcon name="cil-cloud-upload" width="100%" v-else :style="{maxWidth: '300px'}" />
+    {{$refs.upload && $refs.upload.uploaded}}
+
+      <CImg
+        class="upload-image d-block"
+        :class="{ shadow: showInfo }"
+        :src="value"
+        maxWidth="100%"
+        v-if="value && !multiple"
+      />
+
+      <CRow v-else-if="multiple && value && value.length > 0">
+        <CCol col="4" v-for="(src, idx) in value" :key="idx">
+          <CImg
+            class="upload-image d-block"
+            :class="{ shadow: showInfo }"
+            :src="src"
+            maxWidth="100%"
+          />
+        </CCol>
+      </CRow>
+      <CIcon
+        name="cil-cloud-upload"
+        width="100%"
+        v-else
+        :style="{ maxWidth: '300px' }"
+      />
     </file-upload>
   </div>
 </template>
@@ -33,9 +61,14 @@
 export default {
   props: {
     // url
-    value: String,
+    value: [String, Array],
     width: String,
-    showInfo: Boolean
+    showInfo: Boolean,
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
+    maximum: Number,
   },
   data() {
     return {
@@ -44,24 +77,37 @@ export default {
   },
   computed: {
     inputId() {
-      return 'file-upload-'+this._uid
-    }
+      return "file-upload-" + this._uid;
+    },
   },
+
   methods: {
     reset() {
-      this.$emit('input', undefined)
+      this.$emit("input", undefined);
     },
     async doUpload(file, component) {
       try {
+        console.log(this.$refs.upload);
         const formData = new FormData();
-        console.log(file);
         formData.append("image", file.file);
         const { data: result } = await this.$api.post(
           "uploadImage",
           null,
           formData
         );
-        this.$emit("input", result.url);
+        this.$refs.upload.update(file, {active: true})
+        setTimeout(() => {
+          console.log(this.$refs.upload);
+        }, 1000);
+
+        if (this.multiple) {
+          let val = this.value;
+          if (!val) val = [];
+          val.push(result.url);
+          this.$emit("input", val);
+        } else {
+          this.$emit("input", result.url);
+        }
       } catch (err) {
         this.$error(err);
       }
@@ -95,6 +141,14 @@ export default {
       }
     },
   },
+  watch: {
+    files: {
+      deep: true,
+      handler() {
+        console.log(this.files)
+      }
+    }
+  }
 };
 </script>
 

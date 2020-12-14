@@ -12,15 +12,30 @@
     <CCard>
       <CCardHeader>Редактировать страницу</CCardHeader>
       <CCardBody>
-        <AInput class="mb-3" label="Заголовок" v-model="data.name" />
-        <AInput class="mb-3" label="Slug" v-model="data.slug" @input="noSlug=false"/>
-        <PageTemplateSelect label="Шаблон" class="mb-3" v-model="templateId" />
+        <AInput
+          class="mb-3"
+          :isValid="$v.data.name.$error ? false : undefined"
+          label="Заголовок"
+          v-model="data.name"
+        />
+        <AInput
+          class="mb-3"
+          label="Slug"
+          :isValid="$v.data.slug.$error ? false : undefined"
+          v-model="data.slug"
+          @input="noSlug = false"
+        />
+        <PageTemplateSelect :class="{'vue-select-error': $v.data.template.$error}" label="Шаблон" class="mb-3" v-model="templateId" />
       </CCardBody>
     </CCard>
     <CCard>
       <CCardHeader>Поля</CCardHeader>
       <CCardBody>
-        <PageFields v-model="data.values" :items="template.fields" />
+        <PageFields
+          ref="fields"
+          v-model="data.values"
+          :items="template.fields"
+        />
       </CCardBody>
     </CCard>
     <SeoEdit v-model="data" />
@@ -35,6 +50,7 @@ import PostTagSelect from "@/components/PostTagSelect";
 import PageTemplateSelect from "@/components/PageTemplateSelect";
 import PageFields from "@/components/Page/PageFields";
 import cyrillicToTranslit from "cyrillic-to-translit-js";
+import { required } from "vuelidate/lib/validators";
 
 export default {
   components: {
@@ -45,6 +61,19 @@ export default {
   },
   props: {
     isNew: Boolean,
+  },
+  validations: {
+    data: {
+      name: {
+        required,
+      },
+      slug: {
+        required,
+      },
+      template: {
+        required
+      }
+    },
   },
   data() {
     return {
@@ -93,7 +122,20 @@ export default {
         this.$error(err);
       }
     },
+    validate() {
+      this.$v.$touch();
+      const items = !this.$v.data.name.$error && !this.$v.data.slug.$error;
+      return this.$refs.fields.validate() && items;
+    },
     async save() {
+      if (!this.validate()) {
+        this.$notify({
+          group: "main",
+          title: "Исправьте ошибки!",
+          type: "error",
+        });
+        return;
+      }
       try {
         const { data: response } = await this.$api.put(
           "pageById",

@@ -14,9 +14,6 @@ export default {
     return {};
   },
   computed: {
-    isValid() {
-
-    },
     objValue() {
       return this.value || {};
     },
@@ -27,7 +24,7 @@ export default {
       return this.template.name;
     },
     required() {
-      return this.template.required
+      return this.template.required;
     },
     varName() {
       return this.template.var_name;
@@ -38,7 +35,15 @@ export default {
   },
   methods: {
     validate() {
-
+      if (this.required) {
+        if (this.value === false || this.value === 0) {
+        } else {
+          if (!this.value) {
+            return false;
+          }
+        }
+      }
+      return true;
     },
     emitData(value) {
       this.$emit("input", value);

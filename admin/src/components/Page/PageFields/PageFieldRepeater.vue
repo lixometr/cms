@@ -1,13 +1,17 @@
 <template>
   <div>
     <CCard>
-      <CCardHeader>{{template.name}}</CCardHeader>
+      <CCardHeader>{{ template.name }}</CCardHeader>
       <CCardBody>
-        <AppMultiplyer :value="arrValue" @input="emitData">
+        <AppMultiplyer
+          :value="arrValue"
+          @input="emitData"
+          :itemClass="itemClass"
+        >
           <template v-slot:default="{ idx }">
             <PageField
               :template="templateItem"
-              :value="value[idx][templateItem.var_name]"
+              :value="arrValue[idx][templateItem.var_name]"
               @input="onFieldChange(idx, templateItem.var_name, $event)"
               v-for="(templateItem, index) in fields"
               :key="index"
@@ -38,8 +42,29 @@ export default {
       return this.settings.fields || [];
     },
   },
-  created() {},
+  data() {
+    return {
+      itemClass: [],
+    };
+  },
   methods: {
+    getFields() {
+      const refs = Object.keys(this.$refs);
+      const fields = refs
+        .filter((item) => item.indexOf("field-") === 0)
+        .map((ref) => this.$refs[ref])
+        .reduce((arr, item) => arr.concat(item), []);
+      return fields;
+    },
+    validate() {
+      const itemsValid = this.getFields().map((component) => {
+        return component.validate();
+      });
+      this.itemClass = itemsValid.map((item) => ({
+        "border-danger": !item,
+      }));
+      return !itemsValid.includes(false);
+    },
     onInput(value) {
       this.emitData(value);
     },

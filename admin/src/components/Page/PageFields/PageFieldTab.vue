@@ -1,14 +1,19 @@
 <template>
   <div>
     <CTabs variant="tabs" class="p-2" :active-tab="0">
-      <CTab :title="tab.name" v-for="(tab, idx) in settings.fields" :key="idx">
-        <div class="pt-3  border-left border-right border-bottom">
+      <CTab
+        :title="tab.name"
+        v-for="(tab, index) in settings.fields"
+        :key="index"
+      >
+        <div class="pt-3 border-left border-right border-bottom">
           <PageField
             :template="templateItem"
             :value="objValue[templateItem.var_name]"
             @input="onFieldChange(templateItem.var_name, $event)"
             v-for="(templateItem, idx) in tab.fields"
             :key="idx"
+            :ref="`field-${index}`"
           />
         </div>
       </CTab>
@@ -34,6 +39,20 @@ export default {
   },
   created() {},
   methods: {
+    getFields() {
+      const refs = Object.keys(this.$refs);
+      const fields = refs
+        .filter((item) => item.indexOf("field-") === 0)
+        .map((ref) => this.$refs[ref])
+        .reduce((arr, item) => arr.concat(item), []);
+      return fields;
+    },
+    validate() {
+      const itemsValid = this.getFields().map((component) => {
+        return component.validate();
+      });
+      return !itemsValid.includes(false);
+    },
     onInput(value) {
       this.emitData(value);
     },

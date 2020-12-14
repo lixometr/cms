@@ -12,6 +12,7 @@
             @input="onFieldChange(templateItem.var_name, $event)"
             v-for="(templateItem, idx) in item.fields"
             :key="idx"
+            ref="fields"
           />
         </div>
       </div>
@@ -40,6 +41,15 @@ export default {
     };
   },
   methods: {
+    getFields() {
+      return this.$refs.fields;
+    },
+    validate() {
+      const itemsValid = this.getFields().map((component) => {
+        return component.validate();
+      });
+      return !itemsValid.includes(false);
+    },
     onFieldChange(var_name, value) {
       this.$emit("input", { var_name, value });
     },

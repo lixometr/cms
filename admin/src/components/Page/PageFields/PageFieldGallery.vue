@@ -7,7 +7,7 @@
       </div>
     </template>
     <template v-slot:default>
-      <AInput  :value="value" @keypress="onKeyPress" @input="onInput" />
+      <EditImageMultiple :value="value" @input="onInput" :maximum="settings.max"/>
     </template>
   </Label>
 </template>
@@ -16,6 +16,8 @@
 
 <script>
 import Mixin from "./PageFieldMixin";
+import ImageUpload from "@/components/ImageUpload";
+import EditImageMultiple from "@/components/EditImageMultiple"
 // import { required,} from "vuelidate/lib/validators";
 
 export default {
@@ -24,15 +26,14 @@ export default {
   //     required
   //   }
   // },
+  components: {
+    ImageUpload,
+    EditImageMultiple
+  },
   mixins: [Mixin],
   methods: {
-    onKeyPress(e) {
-      const maxLength = this.settings.limit;
-      if (maxLength && this.value && maxLength <= this.value.length) {
-        e.preventDefault();
-      }
-    },
     onInput(value) {
+      console.log("on inp", value);
       this.emitData(value);
     },
   },

@@ -4,7 +4,7 @@
       label="Вариант"
       :isValid="$v.item.value.$error ? false : undefined"
       v-model="item.value"
-      @input="emitData"
+      @input="onChangeValue"
     />
     <AInput
       class="mt-3"
@@ -45,9 +45,19 @@ export default {
     };
   },
   methods: {
+    onChangeValue() {
+      if (!this.hasVarName) {
+        const name = this.item.value || "";
+        let sValue = cyrillicToTranslit().transform(name.toLowerCase(), "_");
+        sValue = sValue.replace(/\/-\./g, "_");
+        this.$set(this.item, "var_name", sValue);
+      }
+
+      this.emitData();
+    },
     onChangeVarName() {
       this.hasVarName = true;
-      this.emitData()
+      this.emitData();
     },
     emitData() {
       this.$emit("input", this.item);
@@ -62,17 +72,6 @@ export default {
       deep: true,
       handler() {
         this.item = _.cloneDeep(this.value);
-      },
-    },
-    item: {
-      deep: true,
-      handler() {
-        if (this.hasVarName) return;
-        const name = this.item.value || "";
-        let sValue = cyrillicToTranslit().transform(name.toLowerCase(), "_");
-        sValue = sValue.replace(/\/-\./g, "_");
-        this.$set(this.item, "var_name", sValue);
-        // this.emitData()
       },
     },
   },

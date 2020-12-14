@@ -1,7 +1,9 @@
 <template>
   <div>
-    <CCard :class="{'no-border-bottom': !isOpen}">
-      <CCardHeader class="cursor-pointer"  @click="toggle">{{ label }}</CCardHeader>
+    <CCard :class="{ 'no-border-bottom': !isOpen }">
+      <CCardHeader class="cursor-pointer" @click="toggle">{{
+        label
+      }}</CCardHeader>
       <CCollapse class="" :show="isOpen">
         <CCardBody class="pt-4 pr-4">
           <PageField
@@ -10,6 +12,7 @@
             @input="onFieldChange(templateItem.var_name, $event)"
             v-for="(templateItem, idx) in fields"
             :key="idx"
+            ref="fields"
           />
         </CCardBody>
       </CCollapse>
@@ -42,6 +45,15 @@ export default {
   },
 
   methods: {
+    getFields() {
+      return this.$refs.fields;
+    },
+    validate() {
+      const itemsValid = this.getFields().map((component) => {
+        return component.validate();
+      });
+      return !itemsValid.includes(false);
+    },
     toggle() {
       this.isOpen = !this.isOpen;
     },
@@ -59,6 +71,6 @@ export default {
 
 <style lang="scss">
 .no-border-bottom {
-  border-bottom: none!important;
+  border-bottom: none !important;
 }
 </style>

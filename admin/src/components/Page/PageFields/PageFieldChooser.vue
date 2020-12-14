@@ -5,6 +5,7 @@
     v-bind="$attrs"
     :value="value"
     :template="template"
+    ref="comp"
   />
 </template>
 
@@ -24,6 +25,7 @@ import PageFieldAccordion from './PageFieldAccordion';
 import PageFieldTab from './PageFieldTab.vue';
 import PageFieldFile from './PageFieldFile.vue';
 import PageFieldBlock from './PageFieldBlock.vue';
+import PageFieldGallery from './PageFieldGallery.vue';
 export default {
   props: {
     value: null,
@@ -51,12 +53,18 @@ export default {
         accordion: PageFieldAccordion,
         block: PageFieldBlock,
         tab: PageFieldTab,
-        file: PageFieldFile
+        file: PageFieldFile,
+        gallery: PageFieldGallery
 
       };
       return components[this.type];
     },
   },
+  methods: {
+    validate() {
+      return this.$refs.comp.validate()
+    }
+  }
 };
 </script>
 
