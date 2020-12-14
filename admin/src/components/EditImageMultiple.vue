@@ -11,11 +11,19 @@
       />
     </div>
     <div v-else key="has_items">
-      <CRow>
-        <CCol v-for="(item, idx) in value" :key="idx">
+      <draggable
+        class="d-flex flex-wrap"
+        tag="div"
+        :value="value"
+        @input="onDragChange"
+      >
+        <div class="p-3" v-for="(item, idx) in value" :key="idx">
           <EditImage :value="item" @input="onItemChange(idx, $event)" />
-        </CCol>
-      </CRow>
+        </div>
+      </draggable>
+      <CButton color="warning" class="d-block w-100" @click="addImage"
+        >Добавить изображение</CButton
+      >
     </div>
   </Label>
 </template>
@@ -23,6 +31,8 @@
 <script>
 import ImageUpload from "@/components/ImageUpload";
 import EditImage from "@/components/EditImage";
+import draggable from "vuedraggable";
+
 export default {
   props: {
     label: String,
@@ -35,13 +45,16 @@ export default {
   components: {
     ImageUpload,
     EditImage,
+    draggable,
   },
   computed: {
     showMultipleUpload() {
-      const uploaded = this.$refs.upload && this.$refs.upload.$refs.upload.uploaded;
+      const uploaded =
+        this.$refs.upload && this.$refs.upload.$refs.upload.uploaded;
       const leng = this.multipleValue.length < 1;
       return !uploaded && leng;
     },
+
     multipleValue() {
       return this.value
         .map((val) => (val ? val.url : ""))
@@ -71,6 +84,14 @@ export default {
   },
 
   methods: {
+    addImage() {
+      const newValue = [...this.value];
+      newValue.push({});
+      this.$emit("input", newValue);
+    },
+    onDragChange(value) {
+      this.$emit("input", value);
+    },
     onLoadMultiple(value) {
       if (!value) value = [];
       const newValue = value.map((val) => ({ url: val }));
@@ -78,11 +99,15 @@ export default {
     },
     onItemChange(idx, value) {
       const newValue = [...this.value];
-      newValue[idx] = value;
+      if (!value || !value.url) {
+        newValue.splice(idx, 1);
+      } else {
+        newValue[idx] = value;
+      }
       this.$emit("input", newValue);
     },
     onInput(val) {
-      const newValue = { ...this.value };
+      const newValue = [...this.value];
       newValue.url = val;
       this.$emit("input", newValue);
     },

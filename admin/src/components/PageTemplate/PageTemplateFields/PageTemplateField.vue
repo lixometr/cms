@@ -41,6 +41,8 @@
           label="Значение в коде"
           v-model="item.var_name"
           @input="onChangeVarName"
+          description="Название поля должно быть уникальным, генерируется автоматически с
+        учетом названия поля (только латинские буквы, цифры и нижние подчеркивания)"
       /></CCol>
       <CCol col="6">
         <Label label="Обязательное?" class="mt-3">
@@ -60,7 +62,8 @@
               :canFull="true"
               v-model="item.comment"
               @input="emitData"
-          /></CCol>
+            />
+          </CCol>
         </CRow>
       </CCol>
     </CRow>
@@ -79,7 +82,7 @@
 import _ from "lodash";
 import PageTemplateFieldChooser from "./PageTemplateFieldChooser";
 import cyrillicToTranslit from "cyrillic-to-translit-js";
-import { required,} from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 export default {
   props: {
     value: Object,

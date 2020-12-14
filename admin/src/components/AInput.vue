@@ -3,6 +3,7 @@
     <CInput
       :isValid="isValid"
       class="mb-0"
+      :description="description"
       :value="value"
       v-on="$listeners"
       @input="$emit('input', $event)"
@@ -18,6 +19,7 @@ export default {
       type: Boolean,
       default: undefined
     },
+    description: String,
 
     value: String,
     required: Boolean,

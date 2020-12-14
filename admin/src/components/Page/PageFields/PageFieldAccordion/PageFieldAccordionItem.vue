@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     getFields() {
-      return this.$refs.fields;
+      return this.$refs.fields || [];
     },
     validate() {
       const itemsValid = this.getFields().map((component) => {

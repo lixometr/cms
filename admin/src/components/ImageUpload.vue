@@ -11,7 +11,7 @@
         >
       </Label>
     </div>
-    <div class="reset-btn bg-danger" @click="reset" v-if="value && !showInfo">
+    <div class="reset-btn bg-danger" @click="reset" v-if="value && value.length > 0 && !showInfo">
       <span>&times;</span>
     </div>
     <file-upload
