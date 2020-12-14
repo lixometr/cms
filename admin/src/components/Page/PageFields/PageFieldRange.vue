@@ -1,6 +1,12 @@
 <template>
   <div>
-    <Label :label="label">
+    <Label label=" ">
+      <template v-slot:label>
+        <div>{{ label }}</div>
+        <div class="page-field-var-name">
+          <i>{{ varName }}</i>
+        </div>
+      </template>
       <VueRangeSlider
         :value="value"
         @change="emitData"
@@ -17,15 +23,14 @@
 
 <script>
 import Mixin from "./PageFieldMixin";
-import VueRangeSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/default.css'
+import VueRangeSlider from "vue-slider-component";
+import "vue-slider-component/theme/default.css";
 
 export default {
   mixins: [Mixin],
   components: {
     VueRangeSlider,
   },
-
 };
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <Label :label="label" class="mb-3">
-    <div v-if="showMultipleUpload" key="no_items">
+    <div v-if="multipleValue.length < 1" key="no_items">
       <ImageUpload
         width="150px"
         :value="multipleValue"
@@ -72,7 +72,6 @@ export default {
 
   methods: {
     onLoadMultiple(value) {
-      console.log("loaded ", value);
       if (!value) value = [];
       const newValue = value.map((val) => ({ url: val }));
       this.$emit("input", newValue);

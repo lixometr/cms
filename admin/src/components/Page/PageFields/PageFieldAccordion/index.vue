@@ -2,7 +2,7 @@
   <div>
     <div class="border">
       <div class="p-3 cursor-pointer" @click="toggle">
-        {{ label }}
+        {{ label }} ({{template.var_name}})
       </div>
       <CCollapse class="" :show="isOpen">
         <div class="p-4">

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <i>{{template.var_name}}</i>
     <CTabs variant="tabs" class="p-2" :active-tab="0">
       <CTab
         :title="tab.name"

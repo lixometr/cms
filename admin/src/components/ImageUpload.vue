@@ -27,8 +27,6 @@
       @input-file="inputFile"
       @input-filter="inputFilter"
     >
-    {{$refs.upload && $refs.upload.uploaded}}
-
       <CImg
         class="upload-image d-block"
         :class="{ shadow: showInfo }"
@@ -71,10 +69,17 @@ export default {
     maximum: Number,
   },
   data() {
+    let files = [];
+    if (this.multiple) {
+      files = [...this.value];
+    } else {
+      files = [];
+    }
     return {
-      files: [],
+      files,
     };
   },
+
   computed: {
     inputId() {
       return "file-upload-" + this._uid;
@@ -87,7 +92,6 @@ export default {
     },
     async doUpload(file, component) {
       try {
-        console.log(this.$refs.upload);
         const formData = new FormData();
         formData.append("image", file.file);
         const { data: result } = await this.$api.post(
@@ -95,19 +99,7 @@ export default {
           null,
           formData
         );
-        this.$refs.upload.update(file, {active: true})
-        setTimeout(() => {
-          console.log(this.$refs.upload);
-        }, 1000);
-
-        if (this.multiple) {
-          let val = this.value;
-          if (!val) val = [];
-          val.push(result.url);
-          this.$emit("input", val);
-        } else {
-          this.$emit("input", result.url);
-        }
+        this.$refs.upload.update(file, { active: true, url: result.url });
       } catch (err) {
         this.$error(err);
       }
@@ -145,10 +137,17 @@ export default {
     files: {
       deep: true,
       handler() {
-        console.log(this.files)
-      }
-    }
-  }
+        if (this.multiple) {
+          const items = this.files.map((item) => item.url);
+          if (items.includes(undefined)) return;
+          this.$emit("input", items);
+        } else {
+          const item = this.files[0] || {};
+          this.$emit("input", item.url);
+        }
+      },
+    },
+  },
 };
 </script>
 

@@ -1,6 +1,12 @@
 <template>
   <div>
-    <Label :label="template.name">
+    <Label label=" ">
+      <template v-slot:label>
+        <div>{{ label }}</div>
+        <div class="page-field-var-name">
+          <i>{{ varName }}</i>
+        </div>
+      </template>
       <CInputRadioGroup
         custom
         :options="options"
@@ -21,7 +27,7 @@ export default {
     options() {
       return this.settings.options.map((opt) => ({
         value: opt.var_name,
-        label: opt.value,
+        label: `${opt.value} (${opt.var_name})`,
       }));
     },
   },

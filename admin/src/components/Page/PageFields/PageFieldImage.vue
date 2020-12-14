@@ -1,5 +1,15 @@
 <template>
-  <EditImage :label="label" :value="value" @input="onChange" />
+  <Label label=" ">
+    <template v-slot:label>
+      <div>{{ label }}</div>
+      <div class="page-field-var-name">
+        <i>{{ varName }}</i>
+      </div>
+    </template>
+    <template v-slot:default>
+      <EditImage :value="value" @input="onChange" />
+    </template>
+  </Label>
 </template>
 
 
@@ -12,12 +22,9 @@ export default {
   components: {
     EditImage,
   },
-  computed: {
-    
-  },
+  computed: {},
   methods: {
     onChange(link) {
-      
       console.log("on hcange", link);
       this.emitData(link);
     },

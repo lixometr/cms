@@ -1,5 +1,11 @@
 <template>
-  <Label :label="label">
+  <Label label=" ">
+    <template v-slot:label>
+      <div>{{ label }}</div>
+      <div class="page-field-var-name">
+        <i>{{ varName }}</i>
+      </div>
+    </template>
     <v-select
       placeholder="Выберите вариант"
       :multiple="settings.multiple"

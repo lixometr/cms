@@ -2,7 +2,7 @@
   <Label label=" ">
     <template v-slot:label>
       <div>{{ label }}</div>
-      <div class="text-sm font-size-12">
+      <div class="page-field-var-name">
         <i>{{ varName }}</i>
       </div>
     </template>

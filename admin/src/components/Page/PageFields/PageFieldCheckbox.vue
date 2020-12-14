@@ -1,15 +1,23 @@
 <template>
   <div>
-    <Label
-      :label="item.value"
-      v-for="(item, idx) in settings.options"
-      :key="idx"
-    >
-      <CInputCheckbox
-        custom
-        @update:checked="onChange(item.var_name, $event)"
-        :checked="arrValue.includes(item.var_name)"
-      />
+    <Label label=" ">
+      <template v-slot:label>
+        <div>{{ label }}</div>
+        <div class="page-field-var-name">
+          <i>{{ varName }}</i>
+        </div>
+      </template>
+      <Label
+        :label="item.value + ` (${item.var_name})`"
+        v-for="(item, idx) in settings.options"
+        :key="idx"
+      >
+        <CInputCheckbox
+          custom
+          @update:checked="onChange(item.var_name, $event)"
+          :checked="arrValue.includes(item.var_name)"
+        />
+      </Label>
     </Label>
   </div>
 </template>
