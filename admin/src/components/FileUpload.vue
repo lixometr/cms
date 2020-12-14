@@ -18,7 +18,7 @@
       @input-filter="inputFilter"
     >
      
-      <CImg class="upload-file  d-block"  :class="{'shadow': showInfo}" :src="value" maxWidth="100%" v-if="value" />
+      <div v-if="value">{{value}}</div>
       <CIcon name="cil-cloud-upload" width="100%" v-else :style="{maxWidth: '300px'}" />
     </file-upload>
   </div>
