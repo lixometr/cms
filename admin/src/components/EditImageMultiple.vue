@@ -99,7 +99,8 @@ export default {
     },
     onItemChange(idx, value) {
       const newValue = [...this.value];
-      if (!value || !value.url) {
+      if ((!value || !value.url )&& newValue[idx].url) {
+        
         newValue.splice(idx, 1);
       } else {
         newValue[idx] = value;
