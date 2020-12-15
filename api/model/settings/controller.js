@@ -1,6 +1,7 @@
 const AppError = require('../../helpers/error')
 const Controller = require('../../lib/controller')
 const settingsFacade = require('./facade')
+const SettingsModification = require('./modification')
 
 class SettingsController extends Controller {
     async findByName(req, res, next) {
@@ -34,4 +35,4 @@ class SettingsController extends Controller {
     }
 }
 
-module.exports = new SettingsController(settingsFacade)
+module.exports = new SettingsController(settingsFacade, SettingsModification)

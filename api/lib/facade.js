@@ -133,11 +133,11 @@ class Facade {
     if (!prices) return 0
     let priceItem = prices.find(p => p.region.toString() === regionId.toString())
     if (!priceItem) {
-        priceItem = prices.find(p => p.region.toString() === defaultRegionId.toString())
-        if (!priceItem) priceItem = {}
+      priceItem = prices.find(p => p.region.toString() === defaultRegionId.toString())
+      if (!priceItem) priceItem = {}
     }
     return priceItem ? priceItem.value : 0
-}
+  }
 
 }
 

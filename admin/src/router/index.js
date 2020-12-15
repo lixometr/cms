@@ -33,6 +33,8 @@ import user from './user'
 import order from './order'
 import noty from './noty'
 import pageTemplate from './pageTemplate'
+import section from './section'
+import settings from './settings'
 
 Vue.use(Router)
 const router = new Router({
@@ -86,8 +88,8 @@ function configRoutes() {
         noty,
         pageStatic,
         pageTemplate,
-     
-
+        section,
+        settings,
         {
           path: 'dashboard',
           name: 'Dashboard',
@@ -106,7 +108,7 @@ function configRoutes() {
       name: 'Login',
       component: Login
     },
-   
+
   ]
 }
 

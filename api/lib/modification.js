@@ -58,7 +58,7 @@ Modification.initItems = async function (items, type, opts) {
     const resolvers = items.map(async item => {
         const instance = new this(item, opts)
         try {
-            await instance.init()
+            await instance.init(type)
         } catch (err) {
             console.log(err)
             return 
@@ -70,7 +70,7 @@ Modification.initItems = async function (items, type, opts) {
 }
 Modification.initItem = async function (item, type, opts) {
     const instance = new this(item, opts)
-    await instance.init()
+    await instance.init(type)
     const result = Modification._getType(instance, type)
     return result
 }

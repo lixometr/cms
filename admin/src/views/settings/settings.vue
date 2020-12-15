@@ -15,6 +15,9 @@
             :reduce="(item) => item._id"
           ></v-select>
         </div>
+        <div v-if="item.type === 'checkbox'">
+          <CInputCheckbox custom :checked.sync="values[item.slug]" />
+        </div>
         <div v-if="item.type === 'custom'">
           <component
             :is="item.component"
@@ -39,46 +42,55 @@ export default {
   data() {
     return {
       settings: [
-        {
-          name: "Регион по умолчанию",
-          slug: "region",
-          type: "select",
-          value: this.$store.getters["region/regions"],
-        },
-        {
-          name: "Метка BestSeller",
-          slug: "best_seller",
-          type: "custom",
-          component: "LabelSelect",
-          options: {
-            multiple: false,
-          },
-        },
-        {
-          name: "Метка Hot Offer",
-          slug: "hot_offer",
-          type: "custom",
-          component: "LabelSelect",
-          options: {
-            multiple: false,
-          },
-        },
-        {
-          name: "Коэффициент для Uncommon",
-          slug: "bonus_uncommon",
-        },
-        {
-          name: "Коэффициент для Rare",
-          slug: "bonus_rare",
-        },
-        {
-          name: "Коэффициент для Epic",
-          slug: "bonus_epic",
-        },
-        {
-          name: "Коэффициент для Legendary",
-          slug: "bonus_legendary",
-        },
+        // {
+        //   name: "Каталог",
+        //   type: "checkbox",
+        //   slug: "showCatalog",
+        // },
+        // {
+        //   name: "Заказы",
+        //   type: "checkbox",
+        //   slug: "showOrders",
+        // },
+        // {
+        //   name: "Уведомления",
+        //   type: "checkbox",
+        //   slug: "showNoty",
+        // },
+        // {
+        //   name: "Виджеты",
+        //   type: "checkbox",
+        //   slug: "showWidgets",
+        // },
+        // {
+        //   name: "Регионы",
+        //   type: "checkbox",
+        //   slug: "showRegions",
+        // },
+        // {
+        //   name: "Регион по умолчанию",
+        //   slug: "region",
+        //   type: "select",
+        //   value: this.$store.getters["region/regions"],
+        // },
+        // {
+        //   name: "Метка BestSeller",
+        //   slug: "best_seller",
+        //   type: "custom",
+        //   component: "LabelSelect",
+        //   options: {
+        //     multiple: false,
+        //   },
+        // },
+        // {
+        //   name: "Метка Hot Offer",
+        //   slug: "hot_offer",
+        //   type: "custom",
+        //   component: "LabelSelect",
+        //   options: {
+        //     multiple: false,
+        //   },
+        // },
       ],
       values: {},
     };

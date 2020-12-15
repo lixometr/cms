@@ -41,7 +41,7 @@ export default {
     async save() {
       try {
         if (this.isNew) {
-          const { data } = await this.$api.post("postTags", null, {
+          const { data } = await this.$api.post("sectionTags", null, {
             slug: this.slug,
             name: this.name,
           });

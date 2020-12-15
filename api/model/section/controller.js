@@ -3,8 +3,8 @@ const Controller = require('../../lib/controller')
 const Modification = require('./modification')
 const facade = require('./facade')
 
-class PostTag extends Controller {
-
+class SectionController extends Controller {
+  
 }
 
-module.exports = new PostTag(facade, Modification)
+module.exports = new SectionController(facade, Modification)

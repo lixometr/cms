@@ -10,7 +10,7 @@
       </CCardBody>
     </CCard>
     <CCard>
-      <CCardHeader>Редактировать страницу</CCardHeader>
+      <CCardHeader>Редактировать запись</CCardHeader>
       <CCardBody>
         <AInput
           class="mb-3"
@@ -25,7 +25,8 @@
           v-model="data.slug"
           @input="noSlug = false"
         />
-        <PageTemplateSelect :class="{'vue-select-error': $v.data.template.$error}" label="Шаблон" class="mb-3" v-model="templateId" />
+      <SectionTagSelect label="Теги" v-model="data.tags" />
+
       </CCardBody>
     </CCard>
     <CCard>
@@ -46,6 +47,7 @@
 
 <script>
 import EditImage from "@/components/EditImage";
+import SectionTagSelect from "@/components/SectionTagSelect";
 import PageTemplateSelect from "@/components/PageTemplateSelect";
 import PageFields from "@/components/Page/PageFields";
 import cyrillicToTranslit from "cyrillic-to-translit-js";
@@ -54,6 +56,7 @@ import { required } from "vuelidate/lib/validators";
 export default {
   components: {
     EditImage,
+    SectionTagSelect,
     PageTemplateSelect,
     PageFields,
   },
@@ -69,8 +72,8 @@ export default {
         required,
       },
       template: {
-        required
-      }
+        required,
+      },
     },
   },
   data() {
@@ -89,20 +92,29 @@ export default {
     this.$loading.stop();
   },
   methods: {
+    // async fetchSe
     async fetchData() {
       try {
         if (!this.isNew) {
-          const { data } = await this.$api.get("pageByIdAdmin", {
-            id: this.$route.params.id,
+          const { data } = await this.$api.get("sectionPostByIdAdmin", {
+            id: this.$route.params.item_id,
           });
           this.data = data;
-          this.templateId = this.data.template;
+          const { data: section } = await this.$api.get("sectionByIdAdmin", {
+            id: this.$route.params.id,
+          });
+          this.templateId = section.template;
           if (!data.slug) {
             this.noSlug = true;
           }
         } else {
-          const { data } = await this.$api.post("pages");
-          this.$router.push({ name: "Page", params: { id: data._id } });
+          const { data } = await this.$api.post("sectionPosts", null, {
+            section: this.$route.params.id,
+          });
+          this.$router.push({
+            name: "SectionItem",
+            params: { item_id: data._id, id: this.$route.params.id },
+          });
           this.data = data;
         }
       } catch (err) {
@@ -136,7 +148,7 @@ export default {
       }
       try {
         const { data: response } = await this.$api.put(
-          "pageById",
+          "sectionPostById",
           { id: this.data._id },
           this.data
         );
@@ -151,7 +163,7 @@ export default {
     },
     async onDelete() {
       try {
-        const { data } = await this.$api.delete("pageById", {
+        const { data } = await this.$api.delete("sectionPostById", {
           id: this.data._id,
         });
         this.$notify({
@@ -159,20 +171,16 @@ export default {
           title: "Удалено!",
           type: "success",
         });
-        this.$router.push({ name: "Pages" });
+        this.$router.push({
+          name: "SectionItems",
+          params: { id: this.$route.params.id },
+        });
       } catch (err) {
         this.$error(err);
       }
     },
   },
   watch: {
-    templateId(newVal, prevVal) {
-      this.$set(this.data, "template", this.templateId);
-      if (newVal !== prevVal && !this.$store.getters.isLoading) {
-        this.$set(this.data, "values", {});
-        this.fetchTemplate();
-      }
-    },
     data: {
       deep: true,
       handler() {

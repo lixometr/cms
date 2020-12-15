@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const postTag = new Schema({
+const sectionTag = new Schema({
   name: String,
   slug: {
     type: String,
@@ -12,4 +12,4 @@ const postTag = new Schema({
   }
 })
 
-module.exports = postTag
+module.exports = sectionTag

@@ -7,7 +7,7 @@ import PageRoutes from "./routes/page"
 import UserRoutes from "./routes/user"
 import PromocodeRoutes from "./routes/promocode"
 import BlogPostsRoutes from "./routes/blogPost"
-import PostTagRoutes from "./routes/postTag"
+import SectionTagRoutes from "./routes/sectionTag"
 import AttributeRoutes from "./routes/attribute"
 import AttributeValuesRoutes from "./routes/attributeValues"
 import LabelRoutes from "./routes/label"
@@ -15,6 +15,9 @@ import OrderRoutes from "./routes/order"
 import NotyRoutes from "./routes/noty"
 import FormRoutes from "./routes/form"
 import PageTemplateRoutes from "./routes/pageTemplate"
+import SectionRoutes from "./routes/section"
+import SettingsRoutes from "./routes/settings"
+import SectionPostRoutes from "./routes/sectionPost"
 
 const routes = {
     ...ProductRoutes,
@@ -24,7 +27,7 @@ const routes = {
     ...UserRoutes,
     ...PromocodeRoutes,
     ...BlogPostsRoutes,
-    ...PostTagRoutes,
+    ...SectionTagRoutes,
     ...AttributeRoutes,
     ...AttributeValuesRoutes,
     ...LabelRoutes,
@@ -32,7 +35,9 @@ const routes = {
     ...NotyRoutes,
     ...FormRoutes,
     ...PageTemplateRoutes,
-    settingByName: '/settings/{{name}}',
+    ...SectionRoutes,
+    ...SettingsRoutes,
+    ...SectionPostRoutes,
     widgetByName: '/widget/{{name}}',
     widgetByNameAdmin: '/widget/admin/{{name}}',
 

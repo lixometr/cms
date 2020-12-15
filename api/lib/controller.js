@@ -77,7 +77,7 @@ class Controller {
         return
       }
 
-      await instance.init()
+      await instance.init('full')
       res.json(instance.toFULL())
     } catch (err) {
       next(err)

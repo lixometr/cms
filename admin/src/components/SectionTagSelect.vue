@@ -16,7 +16,7 @@
 
 <script>
 import SearchSelect from "@/components/SearchSelect";
-import EditPostTag from "@/components/Modals/EditPostTag"
+import EditSectionTag from "@/components/Modals/EditSectionTag"
 export default {
   props: {
     value: [String, Array],
@@ -36,16 +36,16 @@ export default {
 
   methods: {
     createTag() {
-      this.$modal.show(EditPostTag, {}, {width: '100%', height: '100%'})
+      this.$modal.show(EditSectionTag, {}, {width: '100%', height: '100%'})
     },
     async findItem(id) {
-      const { data: tag } = await this.$api.get("postTagById", { id });
+      const { data: tag } = await this.$api.get("sectionTagById", { id });
 
       return { ...tag };
     },
     async searchItem(text, options) {
       const { data: tags } = await this.$api.get(
-        "postTagsSearch",
+        "sectionTagsSearch",
         { text },
         { params: options }
       );

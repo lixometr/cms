@@ -20,7 +20,7 @@
         />
         <AInput class="mb-5" label="Slug" v-model="data.slug" />
         <EditImage class="mb-5" label="Изображение" v-model="data.image" />
-        <PostTagSelect class="mb-5" label="Теги" v-model="data.tags" />
+        <!-- <PostTagSelect class="mb-5" label="Теги" v-model="data.tags" /> -->
         <EditComponent
           :changeValue.sync="data"
           c="EditMultiplyer"
@@ -42,14 +42,12 @@ import AInput from "@/components/AInput";
 import NInput from "@/components/NInput";
 import ImageUpload from "@/components/ImageUpload";
 import EditImage from "@/components/EditImage";
-import PostTagSelect from "@/components/PostTagSelect";
 export default {
   components: {
     AInput,
     NInput,
     EditImage,
     ImageUpload,
-    PostTagSelect,
   },
   props: {
     isNew: Boolean,

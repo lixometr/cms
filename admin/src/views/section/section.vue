@@ -10,7 +10,7 @@
       </CCardBody>
     </CCard>
     <CCard>
-      <CCardHeader>Редактировать страницу</CCardHeader>
+      <CCardHeader>Редактировать раздел</CCardHeader>
       <CCardBody>
         <AInput
           class="mb-3"
@@ -25,16 +25,11 @@
           v-model="data.slug"
           @input="noSlug = false"
         />
-        <PageTemplateSelect :class="{'vue-select-error': $v.data.template.$error}" label="Шаблон" class="mb-3" v-model="templateId" />
-      </CCardBody>
-    </CCard>
-    <CCard>
-      <CCardHeader>Поля</CCardHeader>
-      <CCardBody>
-        <PageFields
-          ref="fields"
-          v-model="data.values"
-          :items="template.fields"
+        <PageTemplateSelect
+          :class="{ 'vue-select-error': $v.data.template.$error }"
+          label="Шаблон"
+          class="mb-3"
+          v-model="templateId"
         />
       </CCardBody>
     </CCard>
@@ -69,8 +64,8 @@ export default {
         required,
       },
       template: {
-        required
-      }
+        required,
+      },
     },
   },
   data() {
@@ -85,14 +80,13 @@ export default {
   async created() {
     this.$loading.start();
     await this.fetchData();
-    await this.fetchTemplate();
     this.$loading.stop();
   },
   methods: {
     async fetchData() {
       try {
         if (!this.isNew) {
-          const { data } = await this.$api.get("pageByIdAdmin", {
+          const { data } = await this.$api.get("sectionByIdAdmin", {
             id: this.$route.params.id,
           });
           this.data = data;
@@ -101,29 +95,19 @@ export default {
             this.noSlug = true;
           }
         } else {
-          const { data } = await this.$api.post("pages");
-          this.$router.push({ name: "Page", params: { id: data._id } });
+          const { data } = await this.$api.post("sections");
+          this.$router.push({ name: "Section", params: { id: data._id } });
           this.data = data;
         }
       } catch (err) {
         this.$error(err);
       }
     },
-    async fetchTemplate() {
-      try {
-        if (!this.templateId) return;
-        const { data } = await this.$api.get("pageTemplateById", {
-          id: this.templateId,
-        });
-        this.template = data;
-      } catch (err) {
-        this.$error(err);
-      }
-    },
+
     validate() {
       this.$v.$touch();
       const items = !this.$v.data.name.$error && !this.$v.data.slug.$error;
-      return this.$refs.fields.validate() && items;
+      return items
     },
     async save() {
       if (!this.validate()) {
@@ -136,7 +120,7 @@ export default {
       }
       try {
         const { data: response } = await this.$api.put(
-          "pageById",
+          "sectionById",
           { id: this.data._id },
           this.data
         );
@@ -151,7 +135,7 @@ export default {
     },
     async onDelete() {
       try {
-        const { data } = await this.$api.delete("pageById", {
+        const { data } = await this.$api.delete("sectionById", {
           id: this.data._id,
         });
         this.$notify({
@@ -159,7 +143,7 @@ export default {
           title: "Удалено!",
           type: "success",
         });
-        this.$router.push({ name: "Pages" });
+        this.$router.push({ name: "Sections" });
       } catch (err) {
         this.$error(err);
       }
@@ -168,10 +152,6 @@ export default {
   watch: {
     templateId(newVal, prevVal) {
       this.$set(this.data, "template", this.templateId);
-      if (newVal !== prevVal && !this.$store.getters.isLoading) {
-        this.$set(this.data, "values", {});
-        this.fetchTemplate();
-      }
     },
     data: {
       deep: true,

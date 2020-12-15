@@ -28,14 +28,14 @@ import AInput from "@/components/AInput";
 import NInput from "@/components/NInput";
 import ImageUpload from "@/components/ImageUpload";
 import EditImage from "@/components/EditImage";
-import PostTagSelect from "@/components/PostTagSelect";
+import SectionTagSelect from "@/components/SectionTagSelect";
 export default {
   components: {
     AInput,
     NInput,
     EditImage,
     ImageUpload,
-    PostTagSelect,
+    SectionTagSelect,
   },
   props: {
     isNew: Boolean,

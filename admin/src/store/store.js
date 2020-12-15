@@ -52,13 +52,18 @@ const actions = {
     const resolvers = [
       async () => {
         await this.dispatch('region/fetch')
-      }
+      },
+      async () => {
+        await this.dispatch('settings/fetch')
+      },
+
     ].map(async func => await func())
     await Promise.all(resolvers)
   }
 }
 import * as region from "./region"
 import * as user from "./user"
+import * as settings from "./settings"
 
 export default new Vuex.Store({
   state,
@@ -68,5 +73,6 @@ export default new Vuex.Store({
   modules: {
     region,
     user,
+    settings
   }
 })
