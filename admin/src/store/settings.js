@@ -20,8 +20,13 @@ export const mutations = {
 }
 export const actions = {
     async fetch({ commit }) {
-        const {data: settings} = await api.get('settings')
-        console.log('settin', settings.items)
-        commit('setSettings', settings.items)
+        try {
+            const { data: settings } = await api.get('settings')
+            console.log('settin', settings.items)
+            commit('setSettings', settings.items)
+        } catch (err) {
+            console.log(err)
+        }
+
     }
 }
