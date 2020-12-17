@@ -11,7 +11,8 @@ export default async () => {
   sections = sections.map(section => ({
     _name: "CSidebarNavItem",
     name: section.name,
-    to: `/sections/${section._id}/items`
+    to: `/sections/${section._id}/items`,
+    icon: 'cil-library'
   }))
   return [
     {
