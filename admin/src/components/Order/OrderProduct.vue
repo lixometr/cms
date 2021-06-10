@@ -2,17 +2,13 @@
   <CCard>
     <CCardBody>
       <Label class="mb-3" label="Название">{{ item.item.name }}</Label>
-      <Label class="mb-3" label="Цена">{{currency}}{{ price }}</Label>
+      <Label class="mb-3" label="Цена">{{ currency }}{{ price }}</Label>
       <CCard>
         <CCardBody>
           <Label class="mb-3" label="Date" v-if="date">
             <span>{{ $moment(date.date).format("DD.MM.YYYY HH:mm") }}</span>
           </Label>
-          <Label
-            class="mb-3"
-            :label="variation.attr.name"
-            v-if="variation"
-          >
+          <Label class="mb-3" :label="variation.attr.name" v-if="variation">
             {{ variation.attrValue.name }}
           </Label>
           <div v-for="(option, idx) in options" :key="idx">

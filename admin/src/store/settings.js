@@ -22,7 +22,6 @@ export const actions = {
     async fetch({ commit }) {
         try {
             const { data: settings } = await api.get('settings')
-            console.log('settin', settings.items)
             commit('setSettings', settings.items)
         } catch (err) {
             console.log(err)

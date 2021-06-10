@@ -11,7 +11,5 @@ instance.interceptors.request.use(config => {
 );
 let baseUrl = 'http://localhost:8080'
 if (process.env.NODE_ENV === 'production') {
-    baseUrl = 'https://api.lootchampion.com'
 }
-console.log('hey', process.env.NODE_ENV)
 export default new Api(ApiRoutes({ baseUrl }), instance)
